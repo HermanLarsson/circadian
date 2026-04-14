@@ -1,4 +1,4 @@
-<img src="images/Circadian_logo_readme.png"/>
+<img src="images/Circadian_readme_white.png"/>
 
 <details>
   <summary>Table of Contents</summary>
