@@ -1,19 +1,19 @@
 ### Title
-
+_Short outcome focused description_
 
 ### Description
 
 _Describe the task or story. What needs to be done and why?_
 ...
 
-### Objective
+### Rationale
 
-_What goal does this task serve? Link to a feature, milestone, or requirement if applicable_
+_Why is this needed? What goal does this task serve?_
 ...
 
 ### User Story
 
-- "..."
+- "As a ... , I want ... , so that ..."
 
 ### Acceptance Criteria
 
