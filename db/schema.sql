@@ -1,0 +1,49 @@
+CREATE TABLE USERS (
+    id SERIAL PRIMARY KEY,
+    fname VARCHAR(50) NOT NULL,
+    mname VARCHAR(50),
+    lname VARCHAR(50) NOT NULL,
+    dob DATE NOT NULL
+);
+
+CREATE TABLE SETTINGS (
+    user_id INTEGER PRIMARY KEY,
+    bedtime TIME,
+    tracking_length INTEGER DEFAULT 60,
+
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE REPORT (
+    report_id SERIAL PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    summary VARCHAR(200),
+
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE SENSOR_DATA (
+    entry_id SERIAL PRIMARY KEY,
+    time_recorded TIMESTAMP NOT NULL,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('temperature', 'humidity', 'light', 'sound')),
+    value NUMERIC (6,2) NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE REPORT_DATA (
+    report INTEGER NOT NULL,
+    data INTEGER NOT NULL,
+
+    PRIMARY KEY (report, data),
+    FOREIGN KEY (report) REFERENCES REPORT(report_id)
+    ON DELETE CASCADE,
+    FOREIGN KEY (data) REFERENCES SENSOR_DATA(entry_id)
+    ON DELETE CASCADE
+);
+
