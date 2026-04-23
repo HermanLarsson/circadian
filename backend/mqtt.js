@@ -1,4 +1,5 @@
 import mqtt from "mqtt";
+import { EventEmitter } from "events";
 
 const options = {
   host: process.env.BROKER_URL,
@@ -8,8 +9,13 @@ const options = {
   password: process.env.MQTT_PASSWORD,
 };
 
-const client = mqtt.connect(options);
+// create mqtt client
+export const client = mqtt.connect(options);
 
+// create EventEmitter. Connect mqtt.js to app.js, so it can listen for events
+export const mqttEvents = new EventEmitter();
+
+// when the client connects, subscribe to the following topics
 client.on("connect", () => {
   console.log("Connected to Circadian HiveMQ broker");
 
@@ -22,10 +28,9 @@ client.on("connect", () => {
   client.subscribe(topics);
 });
 
+// when the client recieves a message, it is emitted internally so app.js can access it
 client.on("message", (topic, message) => {
   console.log(`Recieved from ${topic}: ${message}`);
-  // handle/process values recieved from the MQTT broker
-  // either send to frontend or DB
-});
 
-export default client;
+  mqttEvents.emit("message", { topic, data: message });
+});

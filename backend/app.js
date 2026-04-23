@@ -5,7 +5,8 @@ dotenv.config();
 
 // Dynamically imported so dotnev.config() runs first
 // loads and runs mqtt.js file
-const client = await import("./mqtt.js");
+// app.js has access to the created client and mqttEvents objects
+const { client, mqttEvents } = await import("./mqtt.js");
 
 const app = express();
 const port = process.env.PORT;
@@ -14,8 +15,12 @@ app.get("/", (req, res) => {
   res.send("Circadian");
 });
 
-app.get("/test", (req, res) => {
-  res.send("Testing");
+mqttEvents.on("message", ({ topic, data }) => {
+  // TODO: forward to frontend
+});
+
+mqttEvents.on("message", ({ topic, data }) => {
+  // TODO: save to DB
 });
 
 app.listen(port, () => {
