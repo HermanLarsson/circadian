@@ -5,7 +5,7 @@ stages:
 build-arduino:
   stage: build
   script:
-    - cd arduino
+    - echo "cd arduino when arudino setup is complete"
     - echo "Then compile arduino here yes!"
 
 
