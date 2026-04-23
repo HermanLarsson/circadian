@@ -31,3 +31,9 @@ test-arduino:
   stage: test
   script:
     - echo "This job will be testing stuff"
+
+
+test-backend:
+  stage: test
+  script:
+    - echo "This job will be testing stuff"
