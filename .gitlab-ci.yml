@@ -5,8 +5,8 @@ stages:
 build-arduino:
   stage: build
   script:
-    - echo "Set path here yes"
-    - echo "Then compile webpage here yes!"
+    - cd arduino
+    - echo "Then compile arduino here yes!"
 
 
 build-webpage:
@@ -15,11 +15,14 @@ build-webpage:
     - cd web
     - npm ci
     - npm run build
-    - echo "Set path here yes"
-    - echo "Then compile webpage here yes!"
 
 
-test-job1:
+test-webpage:
+  stage: test
+  script:
+    - echo "This job will be testing stuff"
+
+test-arduino:
   stage: test
   script:
     - echo "This job will be testing stuff"
