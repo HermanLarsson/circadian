@@ -32,8 +32,17 @@ const valuesToAverage = {
 };
 
 client.on("message", (topic, message) => {
-  const type = topicTypeMap[topic];
-  valuesToAverage[type].push(parseFloat(message.toString()));
+  if (topic in topicTypeMap) {
+    const type = topicTypeMap[topic];
+    const messageInt = parseFloat(message.toString());
+    if (!isNaN(messageInt)) {
+      valuesToAverage[type].push(messageInt);
+    } else {
+      console.log(`Error: Invalid message value`);
+    }
+  } else {
+    console.log(`Error: Invalid sensor type`);
+  }
 });
 
 // Function to run every 60 seconds => store an average of values to DB
