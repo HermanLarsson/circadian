@@ -1,0 +1,32 @@
+-- NOTE: For development only. Resets DB.
+DROP TABLE IF EXISTS SENSOR_DATA CASCADE;
+DROP TABLE IF EXISTS SETTINGS CASCADE;
+DROP TABLE IF EXISTS USERS CASCADE;
+
+CREATE TABLE USERS (
+    id SERIAL PRIMARY KEY,
+    fname VARCHAR(50) NOT NULL,
+    mname VARCHAR(50),
+    lname VARCHAR(50) NOT NULL,
+    dob DATE NOT NULL
+);
+
+CREATE TABLE SETTINGS (
+    user_id INTEGER PRIMARY KEY,
+    bedtime TIME,
+    tracking_length INTEGER DEFAULT 60,
+
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+    ON DELETE CASCADE
+);
+
+CREATE TABLE SENSOR_DATA (
+    entry_id SERIAL PRIMARY KEY,
+    time_recorded TIMESTAMP NOT NULL,
+    user_id INTEGER NOT NULL,
+    type VARCHAR(20) NOT NULL CHECK (type IN ('temperature', 'humidity', 'light', 'sound')),
+    value NUMERIC (6,2) NOT NULL,
+
+    FOREIGN KEY (user_id) REFERENCES USERS(id)
+    ON DELETE CASCADE
+);
