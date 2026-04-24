@@ -14,19 +14,6 @@ INSERT INTO SETTINGS (user_id, bedtime, tracking_length) VALUES
 (3, '22:00', 90),
 (4, '22:15', 90);
 
--- TEST REPORTS
-INSERT INTO REPORT (user_id, summary) VALUES
-(1, 'Evening summary'),
-(2, 'Noise level analysis'),
-(3, 'Light exposure report'),
-(4, 'Temperature tracking'),
-(1, 'Sleep environment report'),
-(2, 'Daily environment summary'),
-(3, 'Weekly sleep insights'),
-(4, 'Humidity trends'),
-(1, 'Nighttime disturbances'),
-(2, 'Sensor anomaly report');
-
 -- SENSOR DATA
 INSERT INTO SENSOR_DATA (time_recorded, user_id, type, value) VALUES
 ('2026-04-20 09:00:00',1,'temperature',36.5),
@@ -79,19 +66,3 @@ INSERT INTO SENSOR_DATA (time_recorded, user_id, type, value) VALUES
 ('2026-04-20 13:35:00',4,'temperature',36.7),
 ('2026-04-20 13:40:00',1,'temperature',36.8),
 ('2026-04-20 13:45:00',2,'humidity',47.3);
-
--- REPORT_DATA (link reports to sensor entries)
-INSERT INTO REPORT_DATA (report, data) VALUES
-(4,7),(4,8),(4,9),(4,10),
-(5,11),(5,12),(5,13),(5,14),
-(6,15),(6,16),(6,17),(6,18),
-(7,19),(7,20),(7,21),(7,22),
-(8,23),(8,24),(8,25),(8,26),
-(9,27),(9,28),(9,29),(9,30),
-(10,31),(10,32),(10,33),(10,34),
-(11,35),(11,36),(11,37),(11,38),
-(12,39),(12,40),(12,41),(12,42),
-(13,43),(13,44),(13,45),(13,46),
-(4,47),(5,48),(6,49),(7,50),
-(8,51),(9,52),(10,53),(11,54),
-(12,55),(13,56);
