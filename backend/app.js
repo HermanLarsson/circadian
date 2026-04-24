@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import pg from "pg";
+import { getAverages } from "./report-generation.js";
 
 dotenv.config();
 
@@ -20,8 +21,7 @@ const db = new pg.Client({
   host: process.env.PGHOST,
   port: process.env.PGPORT,
   database: process.env.PGDATABASE,
-})
-
+});
 
 await db.connect().then(() => console.log("Connected to Circadian DB"));
 
@@ -66,10 +66,10 @@ setInterval(async () => {
     try {
       await db.query(
         "INSERT INTO SENSOR_DATA (time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4)",
-        [time_recorded, user_id, type, valuesAverage]
+        [time_recorded, user_id, type, valuesAverage],
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
       );
     } catch (error) {
       console.error("Data insertion error", error);
@@ -86,6 +86,18 @@ client.on("message", (topic, message) => {
 
 app.get("/", (req, res) => {
   res.send("Circadian");
+});
+
+app.get("/report/:date", async (req, res) => {
+  //let date = req.params.date + '%'
+  let date = req.params.date + "%";
+  const result = await db.query(
+    "SELECT * FROM sensor_data WHERE CAST(time_recorded AS VARCHAR) LIKE $1 ORDER BY type",
+    [date],
+  );
+  //SELECT * FROM sensor_data WHERE CAST(time_recorded AS VARCHAR) LIKE '2026-04-24%';
+  getAverages(result.rows);
+  res.send(result.rows);
 });
 
 app.listen(port, () => {
