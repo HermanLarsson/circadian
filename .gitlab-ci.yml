@@ -1,0 +1,39 @@
+stages:
+  - build
+  - test
+
+build-arduino:
+  stage: build
+  script:
+    - echo "cd arduino when arudino setup is complete"
+    - echo "Then compile arduino here yes!"
+
+
+build-webpage:
+  stage: build
+  script:
+    - cd web
+    - npm ci
+    - npm run build
+
+build-backend:
+  stage: build
+  script:
+    - echo "cd backend when setup is complete"
+
+
+test-webpage:
+  stage: test
+  script:
+    - echo "This job will be testing stuff"
+
+test-arduino:
+  stage: test
+  script:
+    - echo "This job will be testing stuff"
+
+
+test-backend:
+  stage: test
+  script:
+    - echo "This job will be testing stuff"
