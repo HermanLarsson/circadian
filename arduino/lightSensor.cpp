@@ -1,25 +1,38 @@
-#include"lightSensor.h"
-#include<iostream>
+#include "lightSensor.h"
+#include "iostream"
 using namespace std;
 
-lightSensor :: lightSensor(int pin) {
+lightSensor :: lightSensor(uint16_t pin) {
   this->pin = pin;
   pinMode(pin, INPUT);
 }
 
-int lightSensor :: getLightVal() {
+uint16_t lightSensor :: getLightVal() {
   return this->lightVal;
 }
 
-void lightSensor :: setLightVal(int newLightVal) {
+void lightSensor :: setLightVal(uint16_t newLightVal) {
   this->lightVal = newLightVal;
 }
 
-int lightSensor :: getPin() {
+uint16_t lightSensor :: getPin() {
   return this->pin;
 }
 
-bool lightSensor :: updateSensorVal() {
-  lightVal = analogRead(pin);
-  cout << lightVal;
+bool lightSensor :: convertToLux(uint16_t lightVal) {
+  float tmp = lightVal * (1000.0 / 1023.0);
+  this->luxVal = (uint16_t)tmp;
+  return true;
 }
+
+bool lightSensor :: updateSensorVal() {
+  convertToLux(analogRead(pin));
+  return true;
+}
+
+uint16_t lightSensor :: getLuxVal() {
+  return this->luxVal;
+}
+
+
+
