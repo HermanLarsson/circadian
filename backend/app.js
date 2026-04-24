@@ -14,8 +14,7 @@ const port = process.env.PORT;
 // TODO: harcoded user for now, update later.
 const user_id = 1;
 const db = new pg.Client({ connectionString: process.env.DATABASE_URL });
-await db.connect();
-console.log("Connected to Circadian DB");
+await db.connect().then(() => console.log("Connected to Circadian DB"));
 
 const topicTypeMap = {
   "circadian/sensors/temperature": "temperature",
