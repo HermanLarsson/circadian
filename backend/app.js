@@ -1,7 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import pg from "pg";
-import { getAverages } from "./report-generation.js";
+import { calculateScores, getAverages } from "./report-generation.js";
 
 dotenv.config();
 
@@ -96,7 +96,9 @@ app.get("/report/:date", async (req, res) => {
     [date],
   );
   //SELECT * FROM sensor_data WHERE CAST(time_recorded AS VARCHAR) LIKE '2026-04-24%';
-  getAverages(result.rows);
+  let avgData = getAverages(result.rows);
+  console.log(avgData);
+  calculateScores(avgData);
   res.send(result.rows);
 });
 
