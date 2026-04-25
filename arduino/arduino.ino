@@ -77,6 +77,16 @@ void loop() {
    tft.drawString("LIGHT", 30, 10);
    tft.drawNumber(luxVal, 50, 50);
 
+    // publish light sensor data to MQTT broker
+    // create char array to hold lightReading
+    char lightReading[10];
+    // converts luxVal into a string and writes to lightReading
+    sprintf(lightReading, "%d", luxVal);
+    // publishes to light topic
+    mqttClient.publish("circadian/sensors/light", lightReading);
+    Serial.println("Published: " + String(lightReading));
+
+
    //Delay 2 sec for each read
    delay(2000);
 }
