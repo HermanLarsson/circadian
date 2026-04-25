@@ -1,5 +1,6 @@
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
+#include <WiFiClient.h>
 
 // Hardcoded values, change as needed
 const char* wifi_name = "NETWORK_NAME";
