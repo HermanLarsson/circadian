@@ -27,7 +27,7 @@ void setup_wifi() {
     Serial.println("IP Address: " + WiFi.localIP());
 }
 
-// set the HiveMQ server to the mqttClient and connects
+// sets the HiveMQ server to the mqttClient and connects
 void connect_to_mqtt() {
     mqttClient.setServer("80da5a8e43574b27838157b2dfb25bc9.s1.eu.hivemq.cloud", 8883);
 
@@ -35,6 +35,18 @@ void connect_to_mqtt() {
         Serial.println("Attempting to Connect to MQTT broker...");
         if (mqttClient.connect("WioTerminalClient", "GlimmeringGoose", "Goose123!") {
             Serial.println("Connected to MQTT Broker");
+
+            mqttClient.subscribe("circadian/sensors/temperature")
+            Serial.println("Subscribed to temperature topic");
+
+            mqttClient.subscribe("circadian/sensors/humidity")
+            Serial.println("Subscribed to humidity topic");
+
+            mqttClient.subscribe("circadian/sensors/light")
+            Serial.println("Subscribed to light topic");
+
+            mqttClient.subscribe("circadian/sensors/sound")
+            Serial.println("Subscribed to sound topic");
         } else {
             Serial.println("Connection to MQTT broker failed, retrying...");
             delay(5000);
