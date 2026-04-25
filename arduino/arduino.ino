@@ -1,13 +1,33 @@
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
 
+// Hardcoded values, change as needed
+const char* wifi_name = "NETWORK_NAME";
+const char* wifi_password = "NETWORK_PASSWORD";
+
+void setup_wifi() {
+    // Use global/static Wifi object
+    WiFi.begin(wifi_name, wifi_password);
+
+    // Print message until WiFi connects
+    while (WiFi.status() != WL_CONNECTED){
+        delay(500);
+        Serial.println("Connecting...");
+    }
+
+    Serial.println("Connected!");
+    // Prints out WIO terminals IP Address
+    Serial.println(WiFi.localIP());
+}
+
 TFT_eSPI tft;
 
 lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor
 
-
 void setup() {
   Serial.begin(115200);
+  setup_wifi();
+
   tft.begin();
   tft.setRotation(3);
   tft.fillScreen(TFT_WHITE);
