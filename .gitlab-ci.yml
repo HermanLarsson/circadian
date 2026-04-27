@@ -5,14 +5,11 @@ stages:
 build-arduino:
   stage: build
   script:
-    - curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh
+    - chmod +x .gitlab/build-arduino-env.sh
+    - ./.gitlab/build-arduino-env.sh
     - export PATH=$PATH:/root/bin
-    - arduino-cli core update-index
-    - arduino-cli core install Seeeduino:samd
-    - arduino-cli lib install "TFT_eSPI"
     - cd arduino
     - arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal .
-
 build-webpage:
   stage: build
   script:
