@@ -1,12 +1,9 @@
+#include "arduino_secrets.h"
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include "Certs.h"
-
-// Hardcoded values, change as needed
-const char* wifiName = "NETWORK_NAME";
-const char* wifiPassword = "NETWORK_PASSWORD";
 
 // Create WiFiClientSecure instance
 WiFiClientSecure wifiClient;
@@ -15,7 +12,7 @@ PubSubClient mqttClient(wifiClient);
 
 void setupWifi() {
     // Use global/static Wifi object
-    WiFi.begin(wifiName, wifiPassword);
+    WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
 
     // Print message until WiFi connects
     while (WiFi.status() != WL_CONNECTED){
@@ -23,7 +20,7 @@ void setupWifi() {
         Serial.println("Connecting to wifi...");
     }
 
-    Serial.println("Connected to: " + String(wifiName));
+    Serial.println("Connected to: " + String(WIFI_NAME));
     // Prints out WIO terminals IP Address
     Serial.print("IP Address: ");
     Serial.println(WiFi.localIP());
@@ -31,11 +28,11 @@ void setupWifi() {
 
 // sets the HiveMQ server to the mqttClient and connects
 void connectToMqtt() {
-    mqttClient.setServer("80da5a8e43574b27838157b2dfb25bc9.s1.eu.hivemq.cloud", 8883);
+    mqttClient.setServer(MQTT_URL, MQTT_PORT);
 
     while(!mqttClient.connected()){
         Serial.println("Attempting to Connect to MQTT broker...");
-        if (mqttClient.connect("WioTerminalClient", "GlimmeringGoose", "Goose123!")) {
+        if (mqttClient.connect(MQTT_CLIENT_ID, MQTT_USERNAME, MQTT_PASSWORD)) {
             Serial.println("Connected to MQTT Broker");
         } else {
             Serial.println("Connection to MQTT broker failed, retrying...");
