@@ -6,8 +6,16 @@ import {
   Scripts,
   ScrollRestoration,
 } from "react-router";
-
-import "./app.css";
+import "@mantine/core/styles.css";
+import {
+  AppShell,
+  Center,
+  ColorSchemeScript,
+  Image,
+  MantineProvider,
+  mantineHtmlProps,
+} from "@mantine/core";
+import logo from "../img/logo.png";
 
 export const links = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,7 +32,7 @@ export const links = () => [
 
 export function Layout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" {...mantineHtmlProps}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -32,7 +40,16 @@ export function Layout({ children }) {
         <Links />
       </head>
       <body>
-        {children}
+        <MantineProvider defaultColorScheme="dark">
+          <AppShell padding="md" header={{ height: 60 }}>
+            <AppShell.Header>
+              <Center>
+                <Image src={logo} h={60} w="auto"></Image>
+              </Center>
+            </AppShell.Header>
+            {children}
+          </AppShell>
+        </MantineProvider>
         <ScrollRestoration />
         <Scripts />
       </body>

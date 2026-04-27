@@ -46,5 +46,6 @@ export function calculateScores(avgData) {
     scores[type] = 100 * (1 - diff / maxDistances[type]);
   }
 
-  console.log(scores);
+  //console.log(scores);
+  return scores;
 }

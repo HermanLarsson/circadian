@@ -88,7 +88,7 @@ app.get("/", (req, res) => {
   res.send("Circadian");
 });
 
-app.get("/report/:date", async (req, res) => {
+app.get("/api/report/:date", async (req, res) => {
   //let date = req.params.date + '%'
   let date = req.params.date + "%";
   const result = await db.query(
@@ -97,9 +97,18 @@ app.get("/report/:date", async (req, res) => {
   );
   //SELECT * FROM sensor_data WHERE CAST(time_recorded AS VARCHAR) LIKE '2026-04-24%';
   let avgData = getAverages(result.rows);
-  console.log(avgData);
-  calculateScores(avgData);
-  res.send(result.rows);
+  //console.log(avgData);
+  let scores = calculateScores(avgData);
+
+  const reportData = {
+    scores: scores,
+    avgData: avgData,
+    timeline: result.rows,
+  };
+
+  console.log(reportData);
+
+  res.send(reportData);
 });
 
 app.listen(port, () => {
