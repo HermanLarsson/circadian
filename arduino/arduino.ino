@@ -4,6 +4,7 @@
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include "Certs.h"
+#include <rpcWiFi.h>
 
 // Create WiFiClientSecure instance
 WiFiClientSecure wifiClient;
@@ -11,6 +12,10 @@ WiFiClientSecure wifiClient;
 PubSubClient mqttClient(wifiClient);
 
 void setupWifi() {
+
+    WiFi.mode(WIFI_STA);
+    WiFi.disconnect();
+
     // Use global/static Wifi object
     WiFi.begin(WIFI_NAME, WIFI_PASSWORD);
 
@@ -18,6 +23,7 @@ void setupWifi() {
     while (WiFi.status() != WL_CONNECTED){
         delay(500);
         Serial.println("Connecting to wifi...");
+        Serial.println(WiFi.status());
     }
 
     Serial.println("Connected to: " + String(WIFI_NAME));
@@ -47,6 +53,9 @@ lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor
 
 void setup() {
   Serial.begin(115200);
+
+  while(!Serial);
+  delay(1000);
 
   // give the wifiClient our HiveMQ certificate
   wifiClient.setCACert(hivemq_cert);
