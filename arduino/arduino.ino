@@ -1,9 +1,11 @@
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
+#include "soundSensor.h"
 
 TFT_eSPI tft;
 
 lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor
+soundSensor theSoundSensor(3); //Instance of SoundSensor
 
 
 void setup() {
@@ -26,7 +28,13 @@ void loop() {
    uint16_t luxVal = theLightSensor.getLuxVal();
    tft.drawString("LIGHT", 30, 10);
    tft.drawNumber(luxVal, 50, 50);
-   
+
+   //SoundSensor
+   theSoundSensor.updateSensorVal();
+   uint16_t dBVal = theSoundSensor.getSoundVal();
+   tft.drawString("SOUND", 150, 10);
+   tft.drawNumber(dBVal, 190, 50);
+
    //Delay 2 sec for each read
    delay(2000);
 }
