@@ -47,6 +47,13 @@ void connectToMqtt() {
     }
 }
 
+void publishReading(value, topic, mqttClient) {
+    char reading[10];
+    sprintf(reading, "%d", value);
+    mqttClient.publish("circadian/sensors/" + topic, value);
+    Serial.println("Published: " + String(reading));
+}
+
 TFT_eSPI tft;
 
 lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor
@@ -92,20 +99,10 @@ void loop() {
    mqttClient.publish("circadian/sensors/light", lightReading);
    Serial.println("Published: " + String(lightReading));
 
-//    char soundReading[10];
-//    sprintf(lightReading, "%d", dBVal);
-//    mqttClient.publish("circadian/sensors/sound", soundReading);
-//    Serial.println("Published: " + String(SoundReading));
-//
-//    char tempReading[10];
-//    sprintf(tempReading, "%d", degreeVal);
-//    mqttClient.publish("circadian/sensors/temperature", tempReading);
-//    Serial.println("Published: " + String(tempReading));
-//
-//    char humidityReading[10];
-//    sprintf(humidityReading, "%d", percentVal);
-//    mqttClient.publish("circadian/sensors/humidity", humidityReading);
-//    Serial.println("Published: " + String(humidityReading));
+   publishReading(luxVal, light, mqttClient);
+//    publishReading(dBVal, sound, mqttClient);
+//    publishReading(degreeVal, temperature, mqttClient);
+//    publishReading(percentVal, humidity, mqttClient);
 
    //Delay 2 sec for each read
    delay(2000);
