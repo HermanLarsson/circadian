@@ -9,6 +9,7 @@ import {
 import "@mantine/core/styles.css";
 import {
   AppShell,
+  AppShellMain,
   Center,
   ColorSchemeScript,
   Image,
@@ -41,13 +42,14 @@ export function Layout({ children }) {
       </head>
       <body>
         <MantineProvider defaultColorScheme="dark">
-          <AppShell padding="md" header={{ height: 60 }}>
+          <AppShell padding="md" header={{ height: 72 }}>
             <AppShell.Header>
               <Center>
                 <Image src={logo} h={60} w="auto"></Image>
               </Center>
             </AppShell.Header>
-            {children}
+
+            <AppShellMain>{children}</AppShellMain>
           </AppShell>
         </MantineProvider>
         <ScrollRestoration />

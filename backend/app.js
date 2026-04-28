@@ -106,7 +106,7 @@ app.get("/api/report/:date", async (req, res) => {
     timeline: result.rows,
   };
 
-  console.log(reportData);
+  // console.log(reportData);
 
   res.send(reportData);
 });

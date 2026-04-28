@@ -23,7 +23,9 @@ export function getAverages(sensorData) {
   sensorData.forEach((row) => avgData[row.type].push(parseFloat(row.value)));
 
   for (const [type, values] of Object.entries(avgData)) {
-    avgData[type] = values.reduce((acc, val) => acc + val, 0) / values.length;
+    avgData[type] = Math.round(
+      values.reduce((acc, val) => acc + val, 0) / values.length,
+    );
   }
   return avgData;
 }
@@ -43,9 +45,12 @@ export function calculateScores(avgData) {
     //scores[type] = 100 * (1 - (diff / maxDistances[type]) ** 2);
 
     //LINEAR SCORING
-    scores[type] = 100 * (1 - diff / maxDistances[type]);
+    scores[type] = Math.round(100 * (1 - diff / maxDistances[type]));
+    if (scores[type] < 0) {
+      scores[type] = 0;
+    }
   }
 
-  //console.log(scores);
+  console.log(scores);
   return scores;
 }

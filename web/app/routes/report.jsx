@@ -1,7 +1,20 @@
 import { useParams } from "react-router";
 import { Welcome } from "../welcome/welcome";
-import { useEffect } from "react";
-import { Button, NumberInput } from "@mantine/core";
+import { useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  CardSection,
+  NumberInput,
+  RingProgress,
+  Container,
+  Text,
+  Center,
+  Box,
+  Flex,
+  Space,
+} from "@mantine/core";
+import Scorecard from "../components/scorecard";
 
 export function meta() {
   return [
@@ -12,22 +25,37 @@ export function meta() {
 
 export default function Report() {
   const params = useParams();
-  let reportData = {};
+  const [reportData, setReportData] = useState({});
 
   useEffect(() => {
     fetch("../api/report/" + params["date"])
       .then((res) => res.json())
       .then((data) => {
-        reportData = data;
+        setReportData(data);
+        console.log("Data fetched, reportData updated with:");
         console.log(reportData);
       });
-  });
+  }, []);
 
   return (
     <div>
-      <span>Domnonic the guy </span>
-
-      <Button>fhfhsdio</Button>
+      <Container size={1500}>
+        <h1>Report: {params["date"]}</h1>
+        {reportData["scores"] && (
+          <Flex justify="space-between" rowGap="md" wrap="wrap">
+            <Scorecard score={reportData["scores"]["sound"]} type="Sound" />
+            <Scorecard
+              score={reportData["scores"]["temperature"]}
+              type="Temp."
+            />
+            <Scorecard
+              score={reportData["scores"]["humidity"]}
+              type="Humidity"
+            />
+            <Scorecard score={reportData["scores"]["light"]} type="Light" />
+          </Flex>
+        )}
+      </Container>
     </div>
   );
 }
