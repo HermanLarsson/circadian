@@ -92,10 +92,20 @@ void loop() {
    mqttClient.publish("circadian/sensors/light", lightReading);
    Serial.println("Published: " + String(lightReading));
 
-   char soundReading[10];
-   sprintf(lightReading, "%d", dBVal);
-   mqttClient.publish("circadian/sensors/sound", soundReading);
-   Serial.println("Published: " + String(SoundReading));
+//    char soundReading[10];
+//    sprintf(lightReading, "%d", dBVal);
+//    mqttClient.publish("circadian/sensors/sound", soundReading);
+//    Serial.println("Published: " + String(SoundReading));
+//
+//    char tempReading[10];
+//    sprintf(tempReading, "%d", degreeVal);
+//    mqttClient.publish("circadian/sensors/temperature", tempReading);
+//    Serial.println("Published: " + String(tempReading));
+//
+//    char humidityReading[10];
+//    sprintf(humidityReading, "%d", percentVal);
+//    mqttClient.publish("circadian/sensors/humidity", humidityReading);
+//    Serial.println("Published: " + String(humidityReading));
 
    //Delay 2 sec for each read
    delay(2000);
