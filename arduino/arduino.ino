@@ -17,6 +17,7 @@ void setup() {
   tft.setTextSize(4);
 }
 
+
 void loop() {
    
    tft.fillScreen(TFT_WHITE); //Paint over last screen
@@ -31,9 +32,8 @@ void loop() {
 
    //SoundSensor
    theSoundSensor.updateSensorVal();
-   uint16_t dBVal = theSoundSensor.getSoundVal();
-   tft.drawString("SOUND", 150, 10);
-   tft.drawNumber(dBVal, 190, 50);
+   tft.drawString("SOUND", 170, 10);
+   tft.drawNumber(theSoundSensor.getCovertedSoundVal(), 200, 50);
 
    //Delay 2 sec for each read
    delay(2000);
