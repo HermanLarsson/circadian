@@ -17,7 +17,7 @@ build-webpage:
     - export NVM_DIR="$HOME/.nvm"
     - cd web
     - source "$NVM_DIR/nvm.sh"
-    - nvm install 22
+    - nvm install --default 22 --no-progress
     - nvm use 22
     - npm ci
     - npm run build
@@ -27,7 +27,7 @@ build-backend:
   script:
     - export NVM_DIR="$HOME/.nvm"
     - source "$NVM_DIR/nvm.sh"
-    - nvm install 22
+    - nvm install --default 22 --no-progress
     - nvm use 22
     - cd backend
     - npm ci
