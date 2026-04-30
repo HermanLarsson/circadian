@@ -25,6 +25,10 @@ build-webpage:
 build-backend:
   stage: build
   script:
+    - export NVM_DIR="$HOME/.nvm"
+    - source "$NVM_DIR/nvm.sh"
+    - nvm install 22
+    - nvm use 22
     - cd backend
     - npm ci
 
