@@ -10,10 +10,15 @@ build-arduino:
     - export PATH=$PATH:/root/bin
     - cd arduino
     - arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal .
+
 build-webpage:
   stage: build
   script:
+    - export NVM_DIR="$HOME/.nvm"
     - cd web
+    - source "$NVM_DIR/nvm.sh"
+    - nvm install 22
+    - nvm use 22
     - npm ci
     - npm run build
 
