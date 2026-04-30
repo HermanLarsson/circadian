@@ -7,7 +7,7 @@ build-arduino:
   script:
     - chmod +x .gitlab/build-arduino-env.sh
     - ./.gitlab/build-arduino-env.sh
-    - export PATH=$PATH:/root/bin
+    - export PATH=$PATH:$PWD/bin
     - cd arduino
     - arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal .
 
