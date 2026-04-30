@@ -47,10 +47,10 @@ void connectToMqtt() {
     }
 }
 
-void publishReading(value, topic, mqttClient) {
+void publishReading(value, topic, pubSubClient) {
     char reading[10];
     sprintf(reading, "%d", value);
-    mqttClient.publish("circadian/sensors/" + topic, value);
+    pubSubClient.publish("circadian/sensors/" + topic, value);
     Serial.println("Published: " + String(reading));
 }
 
