@@ -14,8 +14,8 @@ uint16_t soundSensor :: getPin() {
 
 //Convert to decibels
 bool soundSensor :: convertToDecibels(float avgVal, float maxVal) {
-  float avgDb = CALREF + 20 * log10((float)avgVal/AVGREF); //Calculate the average dB level
-  float maxDb = CALREF + 20 * log10((float)maxVal/MAXREF); //Calculate the max dB level 
+  float avgDb = this->CALREF + 20 * log10((float)avgVal/this->AVGREF); //Calculate the average dB level
+  float maxDb = this->CALREF + 20 * log10((float)maxVal/this->MAXREF); //Calculate the max dB level 
   this->convertedSoundVal = (avgDb + maxDb) / 2; //Calculate the average between avg and max dB levels
 }
 
@@ -34,7 +34,7 @@ bool soundSensor :: updateSensorVal() {
 
     if (newTime - oldTime >= interval) { //Only takes reading of 1ms has passed since last reading
       uint16_t rawVal = analogRead(pin);
-      rawVal = abs(rawVal - NOISEFLOOR);
+      rawVal = abs(rawVal - this->NOISEFLOOR);
       
       //Find the highest sound value
       if (rawVal > maxVal) {
