@@ -2,11 +2,6 @@
 #include "iostream"
 using namespace std;
 
-int AVGREF = 90;
-int MAXREF = 110;
-int CALREF = 80.5;
-int NOISEFLOOR = 35;
-
 //Set Pin
 soundSensor :: soundSensor(uint16_t pin) {
   this->pin = pin;
@@ -19,21 +14,14 @@ uint16_t soundSensor :: getPin() {
 
 //Convert to decibels
 bool soundSensor :: convertToDecibels(float avgVal, float maxVal) {
-  float avgDb = CALREF + 20 * log10((float)avgVal/AVGREF);
-  float maxDb = CALREF + 20 * log10((float)maxVal/MAXREF); 
-  this->convertedSoundVal = (avgDb + maxDb) / 2;
-  
-  //Serial.print("AVG: ");
-  //Serial.println(avgDb);
-  //Serial.print("MAX: ");
-  //Serial.println(maxDb);
-  //Serial.print("DAVG: ");
-  //Serial.println(convertedSoundVal);
+  float avgDb = CALREF + 20 * log10((float)avgVal/AVGREF); //Calculate the average dB level
+  float maxDb = CALREF + 20 * log10((float)maxVal/MAXREF); //Calculate the max dB level 
+  this->convertedSoundVal = (avgDb + maxDb) / 2; //Calculate the average between avg and max dB levels
 }
 
 //Read new values from sensor
 bool soundSensor :: updateSensorVal() {
-  uint8_t SAMPLE_COUNT = 100;
+  const uint8_t SAMPLE_COUNT = 100;
   float maxVal = 0.0;
   int sum = 0;
 
@@ -48,17 +36,18 @@ bool soundSensor :: updateSensorVal() {
       uint16_t rawVal = analogRead(pin);
       rawVal = abs(rawVal - NOISEFLOOR);
       
+      //Find the highest sound value
       if (rawVal > maxVal) {
         maxVal = rawVal; 
       }
 
-      sum = sum + rawVal;
+      sum = sum + rawVal; 
       oldTime = newTime;
       counter++;
     }
   }    
 
-  float avgVal = sum / SAMPLE_COUNT;
+  float avgVal = sum / SAMPLE_COUNT; //Gets the average sound level
   sum = 0;
   convertToDecibels(avgVal, maxVal);
   return true;
