@@ -36,23 +36,31 @@ bool soundSensor :: updateSensorVal() {
   uint8_t SAMPLE_COUNT = 100;
   float maxVal = 0.0;
   int sum = 0;
-  
-  for (int i = 0; i < SAMPLE_COUNT; i++) {
-    uint16_t rawVal = analogRead(pin);
-    rawVal = abs(rawVal - NOISEFLOOR);
-    
-    if (rawVal > maxVal) {
-      maxVal = rawVal; 
+
+  uint8_t interval = 1; //Take reading every 1ms
+  int oldTime = 0; //Saves last time sensors data was read
+  uint16_t counter = 0;
+
+  while (counter < SAMPLE_COUNT) {
+    unsigned long newTime = millis(); 
+
+    if (newTime - oldTime >= interval) { //Only takes reading of 1ms has passed since last reading
+      uint16_t rawVal = analogRead(pin);
+      rawVal = abs(rawVal - NOISEFLOOR);
+      
+      if (rawVal > maxVal) {
+        maxVal = rawVal; 
+      }
+
+      sum = sum + rawVal;
+      oldTime = newTime;
+      counter++;
     }
-    sum = sum + rawVal;
-    delay(1);
-  }
+  }    
 
   float avgVal = sum / SAMPLE_COUNT;
   sum = 0;
-
   convertToDecibels(avgVal, maxVal);
-
   return true;
 }
 
