@@ -3,20 +3,27 @@
 using namespace std;
 
 tempHumiditySensor :: tempHumiditySensor(uint8_t pin, uint8_t type) {
-    this->dht(pin, type);
+    this->pin = pin;
+    this->type = type;
 }
-tempHumiditySensor :: uint8_t getPin() {
+uint8_t tempHumiditySensor :: getPin() {
     return this->pin;
 }
-tempHumiditySensor :: uint8_t getType() {
+uint8_t tempHumiditySensor :: getType() {
     return this->type;
 }
-tempHumiditySensor :: bool updateSensorVal() {
+
+bool tempHumiditySensor :: updateSensorVal(DHT dht) {
+    this->tempVal = dht.readTemperature(false); //false to convert to Celsius 
+    this->humidityVal = dht.readHumidity();
+    //Serial.println(tempVal);
+    //Serial.println(humidityVal);
+
     return true;
 }
-tempHumiditySensor :: uint16_t getTempVal() {
-    return 1;
+float tempHumiditySensor :: getTempVal() {
+    return this->tempVal;
 }
-tempHumiditySensor :: uint16_t getHumidityVal() {
-    return 1; 
+float tempHumiditySensor :: getHumidityVal() {
+    return this->humidityVal; 
 }
