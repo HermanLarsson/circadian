@@ -16,9 +16,6 @@ uint8_t tempHumiditySensor :: getType() {
 bool tempHumiditySensor :: updateSensorVal(DHT dht) {
     this->tempVal = dht.readTemperature(false); //false to convert to Celsius 
     this->humidityVal = dht.readHumidity();
-    //Serial.println(tempVal);
-    //Serial.println(humidityVal);
-
     return true;
 }
 float tempHumiditySensor :: getTempVal() {
