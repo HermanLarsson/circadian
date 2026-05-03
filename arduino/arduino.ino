@@ -9,7 +9,7 @@ lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor with built in p
 soundSensor theSoundSensor(3); //Instance of SoundSensor with pin 3
 tempHumiditySensor thetempHumiditySensor(0, DHT11); //Instance of TempHumiditySensor with pin 0 and type DHT11
 DHT dht(thetempHumiditySensor.getPin(), thetempHumiditySensor.getType());
-//DHT dht(0, DHT11);
+
 int loopInterval = 2000;
 int oldTime = 0;
 
@@ -20,8 +20,8 @@ void setup() {
   tft.fillScreen(TFT_WHITE);
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(4);
-  Wire.begin();
-  dht.begin();
+
+  dht.begin(); 
 }
 
 
@@ -45,13 +45,9 @@ void loop() {
     tft.drawNumber(theSoundSensor.getCovertedSoundVal(), 200, 50);
 
     //TempHumiditySensor
-    Serial.println(dht.readHumidity());
-    Serial.println(dht.readTemperature());
-
     thetempHumiditySensor.updateSensorVal(dht);
     tft.drawString("HUMI", 30, 130);
     tft.drawNumber(thetempHumiditySensor.getHumidityVal(), 50, 170);
-    
     tft.drawString("TEMP", 170, 130);
     tft.drawNumber(thetempHumiditySensor.getTempVal(), 200, 170);
 
