@@ -28,15 +28,15 @@ build-backend:
 test-webpage:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff webpage"
 
 test-arduino:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff arduino"
 
 
 test-backend:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff backend"
