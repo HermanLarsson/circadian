@@ -12,8 +12,6 @@ import {
 } from "@mantine/core";
 
 function Scorecard(score, type) {
-  //console.log(score);
-
   function checkColor(score) {
     if (score >= 80) {
       return "green";

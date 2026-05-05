@@ -12,6 +12,7 @@ const optimalValues = {
   sound: 40,
 };
 
+//Simple averaging
 export function getAverages(sensorData) {
   const avgData = {
     temperature: [],
@@ -30,19 +31,13 @@ export function getAverages(sensorData) {
   return avgData;
 }
 
+//Calculate scores based on a Linear algorithm.
+//Uses the Optimal Values and Max Distances to calculate the score.
+//Is thus dynamic for each type of data and can easily be adjusted.
 export function calculateScores(avgData) {
-  // TODO:
-  //VVVVVVV TO BE IMPORTED FROM SOMEWHERE ELSE
   let scores = {};
   for (const [type, value] of Object.entries(avgData)) {
     let diff = Math.abs(optimalValues[type] - value);
-
-    //To test values, uncomment diff and set your own value!
-    //diff = 5;
-
-    // Two different scoring algorithms.
-    //QUADRATIC SCORING
-    //scores[type] = 100 * (1 - (diff / maxDistances[type]) ** 2);
 
     //LINEAR SCORING
     scores[type] = Math.round(100 * (1 - diff / maxDistances[type]));
@@ -51,10 +46,11 @@ export function calculateScores(avgData) {
     }
   }
 
-  //console.log(scores);
   return scores;
 }
 
+//Front-end data requires separate arrays for each sensor.
+//This function splits them up into different timelines.
 export function generateTimelines(rows) {
   const timelines = {
     light: [],

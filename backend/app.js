@@ -59,6 +59,7 @@ client.on("message", (topic, message) => {
 
 // Function to run every 60 seconds => store an average of values to DB
 setInterval(async () => {
+  //Necessary time conversions to split date and time into two.
   const time_recorded = new Date();
   const curr_date =
     time_recorded.getFullYear() +
