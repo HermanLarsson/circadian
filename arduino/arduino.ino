@@ -49,10 +49,10 @@ void connectToMqtt() {
     }
 }
 
-void publishReading(value, topic, pubSubClient) {
+void publishReading(uint16_t value, const char* topic, PubSubClient& pubSubClient) {
     char reading[10];
     sprintf(reading, "%d", value);
-    pubSubClient.publish("circadian/sensors/" + topic, value);
+    pubSubClient.publish(("circadian/sensors/" + String(topic)).c_str(), reading);
     Serial.println("Published: " + String(reading));
 }
 
@@ -102,26 +102,26 @@ void loop() {
     uint16_t luxVal = theLightSensor.getLuxVal();
     tft.drawString("LIGHT", 30, 10);
     tft.drawNumber(luxVal, 50, 50);
-    publishReading(luxVal, light, mqttClient);
+    publishReading(luxVal, "light", mqttClient);
 
     //SoundSensor
     theSoundSensor.updateSensorVal();
     uint16_t dBVal = theSoundSensor.getCovertedSoundVal();
     tft.drawString("SOUND", 170, 10);
     tft.drawNumber(dBVal, 200, 50);
-    publishReading(dBVal, sound, mqttClient);
+    publishReading(dBVal, "sound", mqttClient);
 
     //TempHumiditySensor
     thetempHumiditySensor.updateSensorVal(dht);
     uint16_t percentVal = thetempHumiditySensor.getHumidityVal();
     tft.drawString("HUMI", 30, 130);
     tft.drawNumber(percentVal, 50, 170);
-    publishReading(percentVal, humidity, mqttClient);
+    publishReading(percentVal, "humidity", mqttClient);
 
     uint16_t degreeVal = thetempHumiditySensor.getTempVal();
     tft.drawString("TEMP", 170, 130);
     tft.drawNumber(degreeVal, 200, 170);
-    publishReading(degreeVal, temperature, mqttClient);
+    publishReading(degreeVal, "temperature", mqttClient);
 
 
     oldTime = newTime; //Update while loop time
