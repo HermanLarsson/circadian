@@ -6,4 +6,3 @@ node_modules/
 
 # Others
 .DS_Store
-arduino_secrets.h
