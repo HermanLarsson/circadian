@@ -6,3 +6,7 @@ arduino-cli core install Seeeduino:samd --additional-urls https://files.seeedstu
 arduino-cli lib install "TFT_eSPI"
 arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
 arduino-cli lib install "DHT sensor library"
+arduino-cli lib install "PubSubClient"
+arduino-cli lib install "Seeed Arduino rpcWiFi"
+
+
