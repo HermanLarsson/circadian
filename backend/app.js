@@ -1,6 +1,11 @@
 import dotenv from "dotenv";
 import express from "express";
 import pg from "pg";
+import {
+  calculateScores,
+  getAverages,
+  generateTimelines,
+} from "./report-generation.js";
 
 dotenv.config();
 
@@ -13,7 +18,15 @@ const port = process.env.PORT;
 
 // TODO: harcoded user for now, update later.
 const user_id = 1;
-const db = new pg.Client({ connectionString: process.env.DATABASE_URL });
+
+const db = new pg.Client({
+  user: process.env.PGUSER,
+  password: process.env.PGPASSWORD,
+  host: process.env.PGHOST,
+  port: process.env.PGPORT,
+  database: process.env.PGDATABASE,
+});
+
 await db.connect().then(() => console.log("Connected to Circadian DB"));
 
 const topicTypeMap = {
@@ -46,8 +59,20 @@ client.on("message", (topic, message) => {
 
 // Function to run every 60 seconds => store an average of values to DB
 setInterval(async () => {
+  //Necessary time conversions to split date and time into two.
   const time_recorded = new Date();
-
+  const curr_date =
+    time_recorded.getFullYear() +
+    "-" +
+    (time_recorded.getMonth() + 1) +
+    "-" +
+    time_recorded.getDate();
+  const curr_time =
+    time_recorded.getHours() +
+    ":" +
+    time_recorded.getMinutes() +
+    ":" +
+    time_recorded.getSeconds();
   // loop through each sensor type
   for (const [type, values] of Object.entries(valuesToAverage)) {
     if (values.length == 0) continue;
@@ -56,11 +81,11 @@ setInterval(async () => {
       values.reduce((acc, val) => acc + val, 0) / values.length;
     try {
       await db.query(
-        "INSERT INTO SENSOR_DATA (time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4)",
-        [time_recorded, user_id, type, valuesAverage]
+        "INSERT INTO SENSOR_DATA (date_recorded, time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4, $5)",
+        [curr_date, curr_time, user_id, type, valuesAverage],
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
       );
     } catch (error) {
       console.error("Data insertion error", error);
@@ -77,6 +102,27 @@ client.on("message", (topic, message) => {
 
 app.get("/", (req, res) => {
   res.send("Circadian");
+});
+
+app.get("/api/report/:date", async (req, res) => {
+  let date = req.params.date + "%";
+
+  let result = await db.query(
+    "SELECT * FROM sensor_data WHERE CAST(date_recorded AS VARCHAR) LIKE $1 ORDER BY type, time_recorded",
+    [date],
+  );
+
+  //Calls the functions from report-generation to consolidate the data
+  let avgData = getAverages(result.rows);
+  let scores = calculateScores(avgData);
+  let timelines = generateTimelines(result.rows);
+  const reportData = {
+    scores: scores,
+    avgData: avgData,
+    timelines: timelines,
+  };
+
+  res.send(reportData);
 });
 
 app.listen(port, () => {

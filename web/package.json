@@ -9,6 +9,7 @@
     "test": "vitest run"
   },
   "dependencies": {
+    "@mantine/charts": "^9.1.1",
     "@mantine/core": "^9.1.0",
     "@mantine/hooks": "^9.1.0",
     "@react-router/node": "7.14.0",
@@ -16,7 +17,8 @@
     "isbot": "^5.1.36",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
-    "react-router": "7.14.0"
+    "react-router": "7.14.0",
+    "recharts": "^3.8.1"
   },
   "devDependencies": {
     "@react-router/dev": "7.14.0",
