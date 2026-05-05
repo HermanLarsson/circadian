@@ -5,9 +5,11 @@ stages:
 build-arduino:
   stage: build
   script:
-    - echo "cd arduino when arudino setup is complete"
-    - echo "Then compile arduino here yes!"
-
+    - chmod +x .gitlab/build-arduino-env.sh
+    - ./.gitlab/build-arduino-env.sh
+    - export PATH=$PATH:$PWD/bin
+    - cd arduino
+    - arduino-cli compile --fqbn Seeeduino:samd:seeed_wio_terminal .
 
 build-webpage:
   stage: build
@@ -19,21 +21,22 @@ build-webpage:
 build-backend:
   stage: build
   script:
-    - echo "cd backend when setup is complete"
+    - cd backend
+    - npm ci
 
 
 test-webpage:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff webpage"
 
 test-arduino:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff arduino"
 
 
 test-backend:
   stage: test
   script:
-    - echo "This job will be testing stuff"
+    - echo "This job will be testing stuff backend"
