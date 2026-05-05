@@ -14,7 +14,9 @@ import {
   Flex,
   Space,
 } from "@mantine/core";
+import { LineChart } from "@mantine/charts";
 import Scorecard from "../components/scorecard";
+import SensorTable from "../components/sensorTable";
 
 export function meta() {
   return [
@@ -26,19 +28,27 @@ export function meta() {
 export default function Report() {
   const params = useParams();
   const [reportData, setReportData] = useState({});
+  const [chosenSensor, setChosenSensor] = useState();
+  const [timelines, setTimelines] = useState({})
 
   useEffect(() => {
     fetch("../api/report/" + params["date"])
       .then((res) => res.json())
       .then((data) => {
         setReportData(data);
-        console.log("Data fetched, reportData updated with:");
-        console.log(reportData);
+       // console.log("Data fetched, reportData updated with:");
+       // console.log(data["timelines"]);
+
+    
+
       });
   }, []);
 
+  
+
   return (
     <div>
+      <Text>{chosenSensor}</Text>
       <Container size={1500}>
         <h1>Report: {params["date"]}</h1>
         {reportData["scores"] && (
@@ -55,6 +65,28 @@ export default function Report() {
             <Scorecard score={reportData["scores"]["light"]} type="Light" />
           </Flex>
         )}
+        <Space h="xl"></Space>
+      {/*}  {reportData["timelines"] &&
+            <LineChart
+          h={500}
+          data={reportData["timelines"]["light"]}
+          series={[
+            { name: "light", label: "Light" },
+          ]}
+          dataKey="time_recorded"
+          withPointLabels
+          strokeWidth={3}
+          curveType="natural"
+          yAxisProps={{ domain: [-10, 160] }}
+          valueFormatter={(value) => `${value}`}
+        /> } */}
+          {reportData["timelines"] &&<div> <SensorTable timeline={reportData["timelines"]["light"]} type="light"/>
+         <SensorTable timeline={reportData["timelines"]["sound"]} type="sound"/>
+         <SensorTable timeline={reportData["timelines"]["temperature"]} type="temperature"/>
+         <SensorTable timeline={reportData["timelines"]["humidity"]} type="humidity"/>
+         </div>}
+        <Space h="xl"/>
+
       </Container>
     </div>
   );

@@ -51,6 +51,25 @@ export function calculateScores(avgData) {
     }
   }
 
-  console.log(scores);
+  //console.log(scores);
   return scores;
+}
+
+export function generateTimelines(rows) {
+  const timelines = {
+    light: [],
+    sound: [],
+    temperature: [],
+    humidity: [],
+  };
+
+  for (let i = 0; i < rows.length; i++) {
+    const curr_type = rows[i]["type"];
+    const curr_value = rows[i]["value"];
+    rows[i][curr_type] = curr_value;
+
+    timelines[curr_type].push(rows[i]);
+  }
+
+  return timelines;
 }
