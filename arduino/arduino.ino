@@ -1,6 +1,8 @@
 #include "arduino_secrets.h"
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
+#include "soundSensor.h"
+#include "tempHumiditySensor.h"
 #include <WiFiClientSecure.h>
 #include <PubSubClient.h>
 #include "Certs.h"
@@ -56,7 +58,13 @@ void publishReading(value, topic, pubSubClient) {
 
 TFT_eSPI tft;
 
-lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor
+lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor with built in pin
+soundSensor theSoundSensor(3); //Instance of SoundSensor with pin 3
+tempHumiditySensor thetempHumiditySensor(0, DHT11); //Instance of TempHumiditySensor with pin 0 and type DHT11
+DHT dht(thetempHumiditySensor.getPin(), thetempHumiditySensor.getType());
+
+int loopInterval = 2000;
+int oldTime = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -74,36 +82,48 @@ void setup() {
   tft.fillScreen(TFT_WHITE);
   tft.setTextColor(TFT_BLACK);
   tft.setTextSize(4);
+
+  dht.begin();
 }
 
+
 void loop() {
+  unsigned long newTime = millis();
+  while (newTime - oldTime >= loopInterval) {
    // keeps the connection to MQTT alive
    mqttClient.loop();
 
    tft.fillScreen(TFT_WHITE); //Paint over last screen
    tft.drawFastHLine(0, 120, 320, TFT_BLACK);
-   tft.drawFastVLine(160, 0, 240, TFT_BLACK); 
+   tft.drawFastVLine(160, 0, 240, TFT_BLACK);
 
-   //LightSensor
-   theLightSensor.updateSensorVal();
-   uint16_t luxVal = theLightSensor.getLuxVal();
-   tft.drawString("LIGHT", 30, 10);
-   tft.drawNumber(luxVal, 50, 50);
+    //LightSensor
+    theLightSensor.updateSensorVal();
+    uint16_t luxVal = theLightSensor.getLuxVal();
+    tft.drawString("LIGHT", 30, 10);
+    tft.drawNumber(luxVal, 50, 50);
+    publishReading(luxVal, light, mqttClient);
 
-   // publish light sensor data to MQTT broker
-   // create char array to hold lightReading
-   char lightReading[10];
-   // converts luxVal into a string and writes to lightReading
-   sprintf(lightReading, "%d", luxVal);
-   // publishes to light topic
-   mqttClient.publish("circadian/sensors/light", lightReading);
-   Serial.println("Published: " + String(lightReading));
+    //SoundSensor
+    theSoundSensor.updateSensorVal();
+    uint16_t dBVal = theSoundSensor.getCovertedSoundVal();
+    tft.drawString("SOUND", 170, 10);
+    tft.drawNumber(dBVal, 200, 50);
+    publishReading(dBVal, sound, mqttClient);
 
-   publishReading(luxVal, light, mqttClient);
-//    publishReading(dBVal, sound, mqttClient);
-//    publishReading(degreeVal, temperature, mqttClient);
-//    publishReading(percentVal, humidity, mqttClient);
+    //TempHumiditySensor
+    thetempHumiditySensor.updateSensorVal(dht);
+    uint16_t percentVal = thetempHumiditySensor.getHumidityVal();
+    tft.drawString("HUMI", 30, 130);
+    tft.drawNumber(percentVal, 50, 170);
+    publishReading(percentVal, humidity, mqttClient);
 
-   //Delay 2 sec for each read
-   delay(2000);
+    uint16_t degreeVal = thetempHumiditySensor.getTempVal();
+    tft.drawString("TEMP", 170, 130);
+    tft.drawNumber(degreeVal, 200, 170);
+    publishReading(degreeVal, temperature, mqttClient);
+
+
+    oldTime = newTime; //Update while loop time
+  }
 }
