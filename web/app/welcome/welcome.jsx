@@ -1,6 +1,5 @@
 import logoDark from "./logo-dark.svg";
 import logoLight from "./logo-light.svg";
-import { Button, NumberInput } from "@mantine/core";
 
 export function Welcome() {
   return (
@@ -18,14 +17,6 @@ export function Welcome() {
               alt="React Router"
               className="hidden w-full dark:block"
             />
-
-            <Button>fhfhsdio</Button>
-
-            <NumberInput
-              label="Input label"
-              description="Input description"
-              placeholder="Input placeholder"
-            ></NumberInput>
           </div>
         </header>
         <div className="max-w-[300px] w-full space-y-6 px-4">
