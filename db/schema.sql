@@ -22,7 +22,8 @@ CREATE TABLE SETTINGS (
 
 CREATE TABLE SENSOR_DATA (
     entry_id SERIAL PRIMARY KEY,
-    time_recorded TIMESTAMP NOT NULL,
+    date_recorded DATE NOT NULL,
+    time_recorded TIME NOT NULL,
     user_id INTEGER NOT NULL,
     type VARCHAR(20) NOT NULL CHECK (type IN ('temperature', 'humidity', 'light', 'sound')),
     value NUMERIC (6,2) NOT NULL,
