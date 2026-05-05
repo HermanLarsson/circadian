@@ -28,8 +28,6 @@ export function meta() {
 export default function Report() {
   const params = useParams();
   const [reportData, setReportData] = useState({});
-  const [chosenSensor, setChosenSensor] = useState();
-  const [timelines, setTimelines] = useState({});
 
   //Runs once when page loads to fetch all data.
   useEffect(() => {
@@ -42,7 +40,6 @@ export default function Report() {
 
   return (
     <div>
-      <Text>{chosenSensor}</Text>
       <Container size={1500}>
         <h1>Report: {params["date"]}</h1>
         {reportData["scores"] && (

@@ -15,11 +15,6 @@ import { LineChart } from "@mantine/charts";
 import { useEffect, useState } from "react";
 
 function SensorTable({ timeline, type }) {
-  useEffect(() => {
-    console.log(timeline);
-    console.log(type);
-  }, []);
-
   return (
     <div>
       <Center>
