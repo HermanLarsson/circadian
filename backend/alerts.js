@@ -76,6 +76,34 @@ export function humidityAlert(humidity) {
   return alert;
 }
 
-export function lightAlert() {}
+export function lightAlert(light) {
+  // TODO: Add functionality which uses user selected bedtime to alter optimalMax level.
+  const optimalMax = 10;
+
+  const alert = {
+    message: "",
+    recommendation: "",
+  };
+
+  if (light > optimalMax) {
+    console.log(`${light} is higher than the optimal level`);
+    alert.message = `Room light is ${
+      light - optimalMax
+    } lux above the optimal level`;
+    alert.recommendation = `Time to loxwer the lights and close the curtains`;
+
+    console.log(alert.message);
+    console.log(alert.recommendation);
+  } else {
+    console.log(`${light} is within the optimal range`);
+    alert.message = `Room light is within the optimal level`;
+    alert.recommendation = `You're perfectly set up for a great sleep`;
+
+    console.log(alert.message);
+    console.log(alert.recommendation);
+  }
+
+  return alert;
+}
 
 export function soundAlert() {}
