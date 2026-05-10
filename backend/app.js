@@ -6,6 +6,7 @@ import {
   getAverages,
   generateTimelines,
 } from "./report-generation.js";
+import { tempAlert } from "./alerts.js";
 
 dotenv.config();
 
@@ -77,28 +78,33 @@ setInterval(async () => {
   for (const [type, values] of Object.entries(valuesToAverage)) {
     if (values.length == 0) continue;
 
+    // average the sensor readings
     const valuesAverage =
       values.reduce((acc, val) => acc + val, 0) / values.length;
+
+    // save to db
     try {
       await db.query(
         "INSERT INTO SENSOR_DATA (date_recorded, time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4, $5)",
-        [curr_date, curr_time, user_id, type, valuesAverage],
+        [curr_date, curr_time, user_id, type, valuesAverage]
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
       );
     } catch (error) {
       console.error("Data insertion error", error);
     }
 
+    // TODO: Update alert message to send to the front end...
+    if (type == "temperature") {
+      tempAlert(valuesAverage);
+    }
+
     // reset values in list
     valuesToAverage[type] = [];
   }
-}, 60000);
-
-client.on("message", (topic, message) => {
-  // TODO: forward to frontend
-});
+  // TODO: Changed to shorter time for testing purposes
+}, 10000);
 
 app.get("/", (req, res) => {
   res.send("Circadian");
@@ -109,7 +115,7 @@ app.get("/api/report/:date", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM sensor_data WHERE CAST(date_recorded AS VARCHAR) LIKE $1 ORDER BY type, time_recorded",
-    [date],
+    [date]
   );
 
   //Calls the functions from report-generation to consolidate the data
