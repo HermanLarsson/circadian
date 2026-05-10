@@ -106,4 +106,31 @@ export function lightAlert(light) {
   return alert;
 }
 
-export function soundAlert() {}
+export function soundAlert(sound) {
+  const optimalMax = 30;
+
+  const alert = {
+    message: "",
+    recommendation: "",
+  };
+
+  if (light > optimalMax) {
+    console.log(`${sound} is higher than the optimal level`);
+    alert.message = `Room sound is ${
+      sound - optimalMax
+    } dB above the optimal level`;
+    alert.recommendation = `Time to loxwer the noise in the room`;
+
+    console.log(alert.message);
+    console.log(alert.recommendation);
+  } else {
+    console.log(`${sound} is within the optimal range`);
+    alert.message = `Room sound is within the optimal level`;
+    alert.recommendation = `You're perfectly set up for a great sleep`;
+
+    console.log(alert.message);
+    console.log(alert.recommendation);
+  }
+
+  return alert;
+}

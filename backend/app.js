@@ -6,7 +6,7 @@ import {
   getAverages,
   generateTimelines,
 } from "./report-generation.js";
-import { humidityAlert, lightAlert, tempAlert } from "./alerts.js";
+import { humidityAlert, lightAlert, soundAlert, tempAlert } from "./alerts.js";
 
 dotenv.config();
 
@@ -102,6 +102,8 @@ setInterval(async () => {
       humidityAlert(valuesAverage);
     } else if (type == "light") {
       lightAlert(valuesAverage);
+    } else if (type == "sound") {
+      soundAlert(valuesAverage);
     }
 
     // reset values in list
