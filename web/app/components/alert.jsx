@@ -5,7 +5,6 @@ import {
   IconVolume,
 } from "@tabler/icons-react";
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
-import classes from "./Alerts.module.css";
 import { useEffect, useState } from "react";
 
 const icons = {
@@ -78,15 +77,19 @@ function Alert() {
     return (
       <Paper withBorder p="md" radius="md" key={alert.sensor}>
         <Group justify="space-between">
-          <Text size="xs" c="dimmed" className={classes.sensor}>
+          <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
             {capitalize(alert.sensor)}
           </Text>
-          <Icon className={classes.icon} size={22} stroke={1.5} />
+          <Icon
+            size={22}
+            stroke={1.5}
+            style={{ color: "var(--mantine-color-gray-4)" }}
+          />
         </Group>
 
         <Group align="flex-end" gap="xs" mt={25}>
-          <Text className={classes.value}>
-            {alert.value.toFixed(1)} {alert.unit}
+          <Text fz={24} fw={700} lh={1}>
+            {alert.value} {alert.unit}
           </Text>
           <Text
             c={
@@ -98,7 +101,8 @@ function Alert() {
             }
             fz="sm"
             fw={500}
-            className={classes.status}
+            lh={1}
+            style={{ display: "flex", alignItems: "center" }}
           >
             <span>{alert.status.toUpperCase()}</span>
           </Text>
@@ -114,7 +118,7 @@ function Alert() {
     );
   });
   return (
-    <div className={classes.root}>
+    <div style={{ padding: "calc(var(--mantine-spacing-xl) * 1.5)" }}>
       <SimpleGrid cols={{ base: 1, xs: 2, md: 4 }}>{alerts}</SimpleGrid>
     </div>
   );
