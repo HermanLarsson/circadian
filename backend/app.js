@@ -1,6 +1,7 @@
 import dotenv from "dotenv";
 import express from "express";
 import pg from "pg";
+import cors from "cors";
 import {
   calculateScores,
   getAverages,
@@ -16,6 +17,13 @@ const { client } = await import("./mqtt.js");
 
 const app = express();
 const port = process.env.PORT;
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 
 // TODO: harcoded user for now, update later.
 const user_id = 1;
@@ -74,6 +82,10 @@ setInterval(async () => {
     time_recorded.getMinutes() +
     ":" +
     time_recorded.getSeconds();
+
+  // single alert object to send to the front end
+  const allAlerts = {};
+
   // loop through each sensor type
   for (const [type, values] of Object.entries(valuesToAverage)) {
     if (values.length == 0) continue;
@@ -97,18 +109,21 @@ setInterval(async () => {
 
     // TODO: Update alert message to send to the front end...
     if (type == "temperature") {
-      tempAlert(valuesAverage);
+      allAlerts.temperature = tempAlert(valuesAverage);
     } else if (type == "humidity") {
-      humidityAlert(valuesAverage);
+      allAlerts.humidity = humidityAlert(valuesAverage);
     } else if (type == "light") {
-      lightAlert(valuesAverage);
+      allAlerts.light = lightAlert(valuesAverage);
     } else if (type == "sound") {
-      soundAlert(valuesAverage);
+      allAlerts.sound = soundAlert(valuesAverage);
     }
 
     // reset values in list
     valuesToAverage[type] = [];
   }
+
+  console.log("ALL ALERTS:", allAlerts);
+
   // TODO: Changed to shorter time for testing purposes
 }, 10000);
 
