@@ -4,6 +4,8 @@ export function tempAlert(temp) {
 
   const alert = {
     sensor: "temperature",
+    value: temp,
+    unit: "°C",
     status: "",
     message: "",
     recommendation: "",
@@ -39,6 +41,8 @@ export function humidityAlert(humidity) {
 
   const alert = {
     sensor: "humidity",
+    value: humidity,
+    unit: "%",
     status: "",
     message: "",
     recommendation: "",
@@ -74,6 +78,8 @@ export function lightAlert(light) {
 
   const alert = {
     sensor: "light",
+    value: light,
+    unit: "lux",
     status: "",
     message: "",
     recommendation: "",
@@ -101,6 +107,8 @@ export function soundAlert(sound) {
 
   const alert = {
     sensor: "sound",
+    value: sound,
+    unit: "dB",
     status: "",
     message: "",
     recommendation: "",
