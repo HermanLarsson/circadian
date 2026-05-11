@@ -7,6 +7,7 @@ import {
   Center,
   Space,
 } from "@mantine/core";
+import { useState } from "react";
 
 export function meta() {
   return [
@@ -16,6 +17,32 @@ export function meta() {
 }
 
 export default function Login() {
+  const [wrongInfoError, setWrongInfoError] = useState(false);
+
+  function handleSubmit(formData) {
+    let loginData = {
+      username: formData.get("username"),
+      password: formData.get("password"),
+    };
+
+    fetch("/api/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(loginData),
+    }).then((res) => {
+      if (res.status == 200) {
+        //TODO: Insert redirect to landing page
+        console.log("okay!");
+      } else if (res.status == 403) {
+        setWrongInfoError(true);
+      } else {
+        alert("Unknown error happened on server!");
+      }
+    });
+  }
+
   return (
     <div>
       <Container strategy="grid" size={400}>
@@ -25,14 +52,24 @@ export default function Login() {
         <Space h="md" />
         <Center>
           <Container w="50%">
-            <form>
-              <TextInput name="username" label="Username" />
+            <form action={handleSubmit}>
+              <TextInput name="username" label="Username" required={true} />
               <Space h="md" />
-              <TextInput name="password" label="Password" />
+              <TextInput
+                name="password"
+                type="password"
+                label="Password"
+                required={true}
+              />
               <Space h="md" />
               <Center>
                 <Button type="submit">Log In</Button>
               </Center>
+              {wrongInfoError && (
+                <Text ta="center" color="red">
+                  Invalid credentials
+                </Text>
+              )}
             </form>
           </Container>
         </Center>

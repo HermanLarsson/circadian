@@ -6,6 +6,7 @@ import {
   getAverages,
   generateTimelines,
 } from "./report-generation.js";
+import bodyParser from "body-parser";
 
 dotenv.config();
 
@@ -18,6 +19,9 @@ const port = process.env.PORT;
 
 // TODO: harcoded user for now, update later.
 const user_id = 1;
+
+//Enables Express to parse incoming requests as JSON.
+app.use(bodyParser.json());
 
 const db = new pg.Client({
   user: process.env.PGUSER,
@@ -123,6 +127,12 @@ app.get("/api/report/:date", async (req, res) => {
   };
 
   res.send(reportData);
+});
+
+app.post("/api/login", async (req, res) => {
+  //Use response code 200 for OK login, 403 for NOT OK
+  console.log(req.body);
+  res.sendStatus(403);
 });
 
 app.listen(port, () => {
