@@ -17,14 +17,14 @@ export function tempAlert(temp) {
     alert.message = `Room temperature is ${(optimalMin - temp).toFixed(
       1
     )} degrees below the optimal level`;
-    alert.recommendation = `Consider opening a window for a few minutes`;
+    alert.recommendation = `Consider turning on a heater`;
   } else if (temp > optimalMax) {
     console.log(`${temp} is higher than the optimal level`);
     alert.status = "bad";
     alert.message = `Room temperature is ${(temp - optimalMax).toFixed(
       1
     )} degrees above the optimal level`;
-    alert.recommendation = `Consider turning on a heater`;
+    alert.recommendation = `Consider opening a window for a few minutes`;
   } else {
     console.log(`${temp} is within the optimal range`);
     alert.status = "good";

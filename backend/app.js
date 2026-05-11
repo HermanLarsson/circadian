@@ -18,6 +18,7 @@ const { client } = await import("./mqtt.js");
 const app = express();
 const port = process.env.PORT;
 
+app.use(express.json());
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -184,6 +185,10 @@ app.get("/api/report/:date", async (req, res) => {
   };
 
   res.send(reportData);
+});
+
+app.get("/api/alerts", (req, res) => {
+  res.json(allAlerts);
 });
 
 app.listen(port, () => {
