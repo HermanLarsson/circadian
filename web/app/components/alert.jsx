@@ -4,9 +4,10 @@ import {
   IconSun,
   IconVolume,
 } from "@tabler/icons-react";
-import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { Group, Loader, Paper, SimpleGrid, Text } from "@mantine/core";
 import { useEffect, useState } from "react";
 
+// used to map to the sensor to the right icon
 const icons = {
   temperature: IconTemperature,
   humidity: IconDroplet,
@@ -50,8 +51,6 @@ const icons = {
 //   },
 // };
 
-const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
-
 function Alert() {
   const [allAlerts, setAllAlerts] = useState(null);
 
@@ -78,7 +77,7 @@ function Alert() {
       <Paper withBorder p="md" radius="md" key={alert.sensor}>
         <Group justify="space-between">
           <Text size="xs" c="dimmed" tt="uppercase" fw={700}>
-            {capitalize(alert.sensor)}
+            {alert.sensor}
           </Text>
           <Icon
             size={22}
@@ -88,9 +87,13 @@ function Alert() {
         </Group>
 
         <Group align="flex-end" gap="xs" mt={25}>
-          <Text fz={24} fw={700} lh={1}>
-            {alert.value} {alert.unit}
-          </Text>
+          {alert.value ? (
+            <Text fz={24} fw={700} lh={1}>
+              {alert.value.toFixed(1)}
+            </Text>
+          ) : (
+            <Loader color="grey" size={22} />
+          )}
           <Text
             c={
               alert.status == "good"
