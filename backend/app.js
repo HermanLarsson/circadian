@@ -52,6 +52,11 @@ const valuesToAverage = {
   sound: [],
 };
 
+// helper function to average a list of numbers
+function average(nums) {
+  return nums.reduce((acc, val) => acc + val, 0) / nums.length;
+}
+
 client.on("message", (topic, message) => {
   if (topic in topicTypeMap) {
     const type = topicTypeMap[topic];
@@ -66,7 +71,35 @@ client.on("message", (topic, message) => {
   }
 });
 
-// Function to run every 60 seconds => store an average of values to DB
+// single alert object containing all alerts
+const allAlerts = {
+  temperature: {
+    sensor: "temperature",
+    status: "pending",
+    message: "Awating readings....",
+    recommendation: "Analysing room...",
+  },
+  light: {
+    sensor: "light",
+    status: "pending",
+    message: "Awating readings....",
+    recommendation: "Analysing room...",
+  },
+  sound: {
+    sensor: "sound",
+    status: "pending",
+    message: "Awating readings....",
+    recommendation: "Analysing room...",
+  },
+  humidity: {
+    sensor: "humidity",
+    status: "pending",
+    message: "Awating readings....",
+    recommendation: "Analysing room...",
+  },
+};
+
+// Store an average of values to DB every 60 seconds
 setInterval(async () => {
   //Necessary time conversions to split date and time into two.
   const time_recorded = new Date();
@@ -83,16 +116,12 @@ setInterval(async () => {
     ":" +
     time_recorded.getSeconds();
 
-  // single alert object to send to the front end
-  const allAlerts = {};
-
   // loop through each sensor type
   for (const [type, values] of Object.entries(valuesToAverage)) {
     if (values.length == 0) continue;
 
     // average the sensor readings
-    const valuesAverage =
-      values.reduce((acc, val) => acc + val, 0) / values.length;
+    const valuesAverage = average(values);
 
     // save to db
     try {
@@ -107,7 +136,18 @@ setInterval(async () => {
       console.error("Data insertion error", error);
     }
 
-    // TODO: Update alert message to send to the front end...
+    // reset values in list
+    valuesToAverage[type] = [];
+  }
+}, 60000);
+
+// update alerts every 5 seconds
+setInterval(() => {
+  for (const [type, values] of Object.entries(valuesToAverage)) {
+    if (values.length == 0) continue;
+
+    const valuesAverage = average(values);
+
     if (type == "temperature") {
       allAlerts.temperature = tempAlert(valuesAverage);
     } else if (type == "humidity") {
@@ -117,15 +157,9 @@ setInterval(async () => {
     } else if (type == "sound") {
       allAlerts.sound = soundAlert(valuesAverage);
     }
-
-    // reset values in list
-    valuesToAverage[type] = [];
   }
-
   console.log("ALL ALERTS:", allAlerts);
-
-  // TODO: Changed to shorter time for testing purposes
-}, 10000);
+}, 5000);
 
 app.get("/", (req, res) => {
   res.send("Circadian");
