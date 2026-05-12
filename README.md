@@ -190,6 +190,34 @@ _add developement roadmap here_
 # Contributors
 
 - Herman Larsson
-- Filip Andersson
-- Kim Duso Joviken
-- Dominic Wooldridge
+
+#### Filip Andersson
+
+- MQTT Broker set up
+- Creation and maintenance of CI/CD Pipeline
+- GitLab runner installation
+- Configured pipeline to install necessary packages
+- Unit testing framework setup
+- Arduino build stage configured
+- Webpage/backend build stage configured
+- Test stages configured
+- Requirements refactoring
+- WIO Terminal measurement text added.
+- Software architecture diagram refactoring
+
+#### Kim Duso Joviken
+
+#### Dominic Wooldridge
+
+- MQTT Broker set up and configuration
+- Creation of foundational dataflow pipeline
+- WIO Terminal WiFi configuration
+- Express.js server set up and configuration
+- Front end fetching and rendering of live-sensor values
+- Alert and reccommendation feature
+- README / Documentation creation
+- Wiki Creation and Upkeep
+- Issue template creation
+- Project Diagram creation (System Architecture Diagram, DB EER, DB Relational Model)
+- Requirements Engineering
+- Database Design and creation
