@@ -4,8 +4,10 @@ import {
     Button,
     Flex  //Remove this
 } from '@mantine/core';
+import { useNavigate } from 'react-router';
 
 function UserSettings() {
+    const navigate = useNavigate();
     return (
         <>
 
@@ -32,7 +34,7 @@ function UserSettings() {
         >
             <Text size="sm">Box 2</Text>
         </Flex>*/}
-            <h1>View Reports Button</h1>
+            <Button variant="filled" onClick={() => navigate("/report/" + {/*Getting the date somehow */})}>View Reports</Button>
             <h1>User Settings</h1>
             <Grid grow="" bg="gray" mt="50" mih="300">
                 <Grid.Col span={1}></Grid.Col>
@@ -61,7 +63,7 @@ function UserSettings() {
 
                 <Grid.Col span={1}></Grid.Col>
                 <Grid.Col span={2} bg="pink" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10" >
-                    <Text>Edit Button </Text> 
+                    <Button variant="filled">Edit Settings</Button>
                 </Grid.Col>
 
             </Grid> 
