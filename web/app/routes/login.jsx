@@ -7,7 +7,9 @@ import {
   Center,
   Space,
 } from "@mantine/core";
+import { index } from "@react-router/dev/routes";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export function meta() {
   return [
@@ -18,6 +20,7 @@ export function meta() {
 
 export default function Login() {
   const [wrongInfoError, setWrongInfoError] = useState(false);
+  let navigate = useNavigate();
 
   function handleSubmit(formData) {
     let loginData = {
@@ -33,8 +36,7 @@ export default function Login() {
       body: JSON.stringify(loginData),
     }).then((res) => {
       if (res.status == 200) {
-        //TODO: Insert redirect to landing page
-        console.log("okay!");
+        navigate("/");
       } else if (res.status == 403) {
         setWrongInfoError(true);
       } else {
