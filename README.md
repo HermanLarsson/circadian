@@ -81,6 +81,11 @@ cd backend
 npm install
 ```
 
+```
+cd web
+npm install
+```
+
 3. Install Arduino libraries:
    _ALL ARDUINO LIBRARIES_
 
@@ -139,6 +144,18 @@ YOUR_TLS_CERTIFICATE_HERE
 ```
 
 Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading-tls-java-keystores-and-truststores
+
+5. Run the backend and front end:
+
+```
+cd backend
+node app.js // or npm run dev using nodemon
+```
+
+```
+cd web
+npm run dev
+```
 
 ### Hardware Setup
 
