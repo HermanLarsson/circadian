@@ -40,7 +40,9 @@ _link to video here..._
 
 ## System Architecture
 
-https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home/System-Architecture?edit=true
+Below is a representation of how data will flow through the Circadian system. The Application tier and the Hardware tier are separated by a Broker tier. Within the Application tier data flows to the Web App (frontend/UI) and the Database via the server.
+
+<img src="images/system_architecture.png"/>
 
 # Getting Started
 
@@ -84,6 +86,8 @@ npm install
 
 ## Setup
 
+### Software Setup
+
 1. Create an .env file in the /backend folder.
    Configure environment variables with your credentials as necessary:
 
@@ -110,7 +114,7 @@ psql -U postgres -c "CREATE DATABASE circadian;"
 psql -U postgres -d circadian -f backend/db/schema.sql
 ```
 
-TODO: Make a arduino_secrets.h.example file
+_TODO: Make a arduino_secrets.h.example file_
 
 3. Open arduino/arduino_secrets.h and update with your credentials:
 
@@ -136,9 +140,35 @@ YOUR_TLS_CERTIFICATE_HERE
 
 Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading-tls-java-keystores-and-truststores
 
+### Hardware Setup
+
+_add instructions for hardware here_
+
 # User Manual
 
+### Basic user creation and login
+
+1. If first time using Circadian, navigate to the sign up page by clicking the 'sign up' button and fill in your details.
+
+2. Login using your username and password.
+
+3. You will be redirected to your landing page where you will be show live sensor readings and recommendations for your environment.
+
+### Report Generation
+
+1. Select a date from the report drop down menu on the landing page.
+
+2. A report will be generated using your data from that day. Here you can see trends of your sleep environment from chosen days.
+
+### Account Customization
+
+1. Navigate to 'Settings' and chose your desired preferences.
+
+2. These preferences will decide and adjust the optimal levels for the users sleep enviroment and send messages/recommendations based on these preferecnes.
+
 # Roadmap
+
+_add developement roadmap here_
 
 # Contributors
 
@@ -146,7 +176,3 @@ Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading
 - Filip Andersson
 - Kim Duso Joviken
 - Dominic Wooldridge
-
-```
-
-```
