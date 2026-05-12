@@ -1,4 +1,4 @@
-//import { Welcome } from "../welcome/welcome";
+import UserSettings from "../components/userSettings";
 
 export function meta() {
   return [
@@ -8,5 +8,5 @@ export function meta() {
 }
 
 export default function Home() {
-  return <userSettings />;
+  return <UserSettings />;
 }
