@@ -6,18 +6,28 @@ import {
   getAverages,
   generateTimelines,
 } from "./report-generation.js";
+import bodyParser from "body-parser";
+import fs, { read } from "fs";
+import path from "path";
 
 dotenv.config();
 
 // Dynamically imported so dotnev.config() runs first
 // Now app.js has access to the created client
 const { client } = await import("./mqtt.js");
-
+const __dirname = import.meta.dirname;
 const app = express();
 const port = process.env.PORT;
 
-// TODO: harcoded user for now, update later.
-const user_id = 1;
+//parser to accept json data from requests
+const jsonParser = bodyParser.json();
+
+// user_id 0 for NO user
+let user_id = 0;
+readUser();
+
+//Enables Express to parse incoming requests as JSON.
+app.use(bodyParser.json());
 
 const db = new pg.Client({
   user: process.env.PGUSER,
@@ -104,7 +114,7 @@ app.get("/", (req, res) => {
   res.send("Circadian");
 });
 
-app.get("/api/report/:date", async (req, res) => {
+app.get("/api/report/:date", jsonParser, async (req, res) => {
   let date = req.params.date + "%";
 
   let result = await db.query(
@@ -124,6 +134,32 @@ app.get("/api/report/:date", async (req, res) => {
 
   res.send(reportData);
 });
+
+app.post("/api/login", async (req, res) => {
+  //Use response code 200 for OK login, 403 for NOT OK
+
+  let result = await db.query(
+    "SELECT * FROM users WHERE username = $1 AND password = $2",
+    [req.body.username, req.body.password],
+  );
+  if (result.rows.length == 1) {
+    writeUser(result.rows[0].id);
+    readUser();
+    res.sendStatus(200);
+  } else {
+    res.sendStatus(403);
+  }
+});
+
+function readUser() {
+  const data = fs.readFileSync(path.join(__dirname, "/usr.cache"));
+  user_id = data;
+}
+
+function writeUser(id) {
+  id = id.toString();
+  fs.writeFileSync(path.join(__dirname, "/usr.cache"), id);
+}
 
 app.listen(port, () => {
   console.log(`Circadian App on port ${port}`);

@@ -1,11 +1,11 @@
 -- Insert test data into DB
 
 -- USERS
-INSERT INTO USERS (fname, mname, lname, dob) VALUES
-('Dominic', 'Paul', 'Wooldridge', '1999-03-11'),
-('Kim', 'Duso', 'Joviken', '1998-02-10'),
-('Filip', NULL, 'Andersson', '2003-05-18'),
-('Herman', NULL, 'Larsson', '2003-05-26');
+INSERT INTO USERS (username, password, fname, mname, lname, dob) VALUES
+('guswoodo', 'passy', 'Dominic', 'Paul', 'Wooldridge', '1999-03-11'),
+('gusduski', 'lösen', 'Kim', 'Duso', 'Joviken', '1998-02-10'),
+('gusanfil', 'leviday', 'Filip', NULL, 'Andersson', '2003-05-18'),
+('guslarher', 'mooziq', 'Herman', NULL, 'Larsson', '2003-05-26');
 
 -- USERS selected SETTINGS
 INSERT INTO SETTINGS (user_id, bedtime, tracking_length) VALUES
