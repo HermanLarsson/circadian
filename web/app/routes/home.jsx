@@ -1,4 +1,5 @@
 import UserSettings from "../components/userSettings";
+import ReportDropdown from "../components/reportDropdown";
 
 export function meta() {
   return [
@@ -8,5 +9,10 @@ export function meta() {
 }
 
 export default function Home() {
-  return <UserSettings />;
+  return (
+  <>
+    <ReportDropdown />
+    <UserSettings />
+  </>
+  );
 }
