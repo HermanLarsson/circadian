@@ -2,14 +2,13 @@ import {
     Text, 
     Grid, 
     Button,
-    Flex  //Remove this
+    Flex  //TODO:Remove this if not used
 } from '@mantine/core';
 import { useNavigate } from 'react-router';
 
 function UserSettings() {
-    const navigate = useNavigate();
     return (
-        <>
+    <>
 
         {/*<Flex
 
@@ -34,7 +33,6 @@ function UserSettings() {
         >
             <Text size="sm">Box 2</Text>
         </Flex>*/}
-            <Button variant="filled" onClick={() => navigate("/report/" + {/*Getting the date somehow */})}>View Reports</Button>
             <h1>User Settings</h1>
             <Grid grow="" bg="gray" mt="50" mih="300">
                 <Grid.Col span={1}></Grid.Col>
