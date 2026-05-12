@@ -7,8 +7,7 @@ import {
   getAverages,
   generateTimelines,
 } from "./report-generation.js";
-import bodyParser from "body-parser";
-import fs, { read } from "fs";
+import fs from "fs";
 import path from "path";
 import { humidityAlert, lightAlert, soundAlert, tempAlert } from "./alerts.js";
 
@@ -29,23 +28,9 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(
-  cors({
-    origin: "http://localhost:5173",
-    credentials: true,
-  })
-);
-
-//parser to accept json data from requests
-const jsonParser = bodyParser.json();
-
 // user_id 0 for NO user
 let user_id = 0;
 readUser();
-
-//Enables Express to parse incoming requests as JSON.
-app.use(bodyParser.json());
 
 const db = new pg.Client({
   user: process.env.PGUSER,
@@ -185,7 +170,7 @@ app.get("/", (req, res) => {
   res.send("Circadian");
 });
 
-app.get("/api/report/:date", jsonParser, async (req, res) => {
+app.get("/api/report/:date", async (req, res) => {
   let date = req.params.date + "%";
 
   let result = await db.query(
