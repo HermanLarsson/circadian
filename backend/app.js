@@ -147,16 +147,17 @@ setInterval(() => {
   for (const [type, values] of Object.entries(valuesToAverage)) {
     if (values.length == 0) continue;
 
-    const valuesAverage = average(values);
+    // takes the latest reading from the list of values being averaged and stored in DB
+    const lastestReading = values[values.length - 1];
 
     if (type == "temperature") {
-      allAlerts.temperature = tempAlert(valuesAverage);
+      allAlerts.temperature = tempAlert(lastestReading);
     } else if (type == "humidity") {
-      allAlerts.humidity = humidityAlert(valuesAverage);
+      allAlerts.humidity = humidityAlert(lastestReading);
     } else if (type == "light") {
-      allAlerts.light = lightAlert(valuesAverage);
+      allAlerts.light = lightAlert(lastestReading);
     } else if (type == "sound") {
-      allAlerts.sound = soundAlert(valuesAverage);
+      allAlerts.sound = soundAlert(lastestReading);
     }
   }
   console.log("ALL ALERTS:", allAlerts);
