@@ -1,6 +1,7 @@
 import { 
     Text, 
     Grid, 
+    Button,
     Flex  //Remove this
 } from '@mantine/core';
 
@@ -31,15 +32,38 @@ function UserSettings() {
         >
             <Text size="sm">Box 2</Text>
         </Flex>*/}
-        
+            <h1>View Reports Button</h1>
             <h1>User Settings</h1>
             <Grid grow="" bg="gray" mt="50" mih="300">
-                <Grid.Col span={6} bg="yellow" mih="100">Name</Grid.Col>
-                <Grid.Col span={6} bg="pink" mih="100">Bedtime</Grid.Col>
-                <Grid.Col span={6} bg="green" mih="100">DateOfBirth</Grid.Col>
-                <Grid.Col span={6} bg="yellow" mih="100">TrackingLength</Grid.Col>
-                <Grid.Col span={6} bg="pink" mih="100">ReportButton</Grid.Col>
-                <Grid.Col span={6} bg="green" mih="100">EditButton</Grid.Col>
+                <Grid.Col span={1}></Grid.Col>
+                <Grid.Col span={2} bg="orange" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10">
+                    <Text>Name:</Text> 
+                    <Text>Herman Larsson</Text> 
+                </Grid.Col>
+
+                <Grid.Col span={2} bg="pink" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10" >
+                    <Text>Bedtime: </Text> 
+                    <Text>21:00 </Text> 
+                </Grid.Col>
+                <Grid.Col span={7}></Grid.Col>
+
+                <Grid.Col span={1}></Grid.Col>
+                <Grid.Col span={2} bg="pink" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10" >
+                    <Text>Date Of Birth: </Text> 
+                    <Text>1931-01-01</Text> 
+                </Grid.Col>
+
+                <Grid.Col span={2} bg="orange" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10" >
+                    <Text>Tracking Length: </Text> 
+                    <Text>60 min </Text> 
+                </Grid.Col>
+                <Grid.Col span={7}></Grid.Col>
+
+                <Grid.Col span={1}></Grid.Col>
+                <Grid.Col span={2} bg="pink" mih="100" style={{display: "flex", alignItems: "flex-start", flexDirection: "column", }} pl="10" >
+                    <Text>Edit Button </Text> 
+                </Grid.Col>
+
             </Grid> 
         </>
     );
