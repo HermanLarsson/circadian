@@ -87,7 +87,7 @@ function Alert() {
         </Group>
 
         <Group align="flex-end" gap="xs" mt={25}>
-          {alert.value ? (
+          {alert.value != null ? (
             <Text fz={24} fw={700} lh={1}>
               {alert.value.toFixed(1)}
             </Text>
