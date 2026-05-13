@@ -15,6 +15,7 @@ import {
   soundAlert,
   tempAlert,
 } from "./utils/alerts.js";
+import {isValidHumidity, isValidTemperature, isValidLux, isValidSound} from "./utils/sensorValidation.js";
 
 dotenv.config();
 
@@ -70,7 +71,25 @@ client.on("message", (topic, message) => {
   if (topic in topicTypeMap) {
     const type = topicTypeMap[topic];
     const messageInt = parseFloat(message.toString());
-    if (!isNaN(messageInt)) {
+
+    let testResult;
+    switch(type){
+        case "temperature":
+            testResult = isValidTemperature(messageInt);
+            break
+        case "humidity":
+            testResult = isValidHumidity(messageInt);
+            break
+        case "light":
+            testResult = isValidLux(messageInt);
+            break
+        case "sound":
+            testResult = isValidSound(messageInt);
+            break
+        default:
+            testResult = false
+    }
+    if (testResult) {
       valuesToAverage[type].push(messageInt);
     } else {
       console.log(`Error: Invalid message value`);
@@ -85,25 +104,25 @@ const allAlerts = {
   temperature: {
     sensor: "temperature",
     status: "pending",
-    message: "Awating readings....",
+    message: "Awaiting readings....",
     recommendation: "Analysing room...",
   },
   light: {
     sensor: "light",
     status: "pending",
-    message: "Awating readings....",
+    message: "Awaiting readings....",
     recommendation: "Analysing room...",
   },
   sound: {
     sensor: "sound",
     status: "pending",
-    message: "Awating readings....",
+    message: "Awaiting readings....",
     recommendation: "Analysing room...",
   },
   humidity: {
     sensor: "humidity",
     status: "pending",
-    message: "Awating readings....",
+    message: "Awaiting readings....",
     recommendation: "Analysing room...",
   },
 };
