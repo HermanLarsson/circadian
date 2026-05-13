@@ -21,11 +21,23 @@ describe('Light sensor', () => {
     test('Lux value at 1000 accepted', () => {expect(isValidLux(1000)).toBe(true) })
     test('Lux value at 0 accepted', () => {expect(isValidLux(0)).toBe(true)})
     test('Lux value at negative value rejected', () => {expect(isValidLux(-1)).toBe(false)})
+    test('Lux value above threshold rejected', () => {expect(isValidLux(1001)).toBe(false)})
+
 })
 
 describe('Sound Sensor', () => {
     test('Sound value at 120 accepted', () => {expect(isValidSound(120)).toBe(true) })
     test('Sound value at 0 accepted', () => {expect(isValidSound(0)).toBe(true)})
     test('Sound value at negative value rejected', () => {expect(isValidSound(-1)).toBe(false)})
+    test('Sound value above threshold rejected', () => {expect(isValidSound(121)).toBe(false)})
+
 })
+
+describe('Temperature Sensor', () => {
+    test('Temperature at 50 accepted', () => {expect(isValidTemperature(50)).toBe(true) })
+    test('Temperature at 0 accepted', () => {expect(isValidTemperature(0)).toBe(true)})
+    test('Temperature at negative value rejected', () => {expect(isValidTemperature(-1)).toBe(false)})
+    test('Temperature above threshold rejected', () => {expect(isValidTemperature(51)).toBe(false)})
+})
+
 
