@@ -1,3 +1,4 @@
+import Alert from "../components/alert";
 import { Welcome } from "../welcome/welcome";
 
 export function meta() {
@@ -8,5 +9,10 @@ export function meta() {
 }
 
 export default function Home() {
-  return <Welcome />;
+  return (
+    <div>
+      <h1>Circadian</h1>
+      <Alert />
+    </div>
+  );
 }
