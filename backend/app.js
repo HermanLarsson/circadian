@@ -6,10 +6,15 @@ import {
   calculateScores,
   getAverages,
   generateTimelines,
-} from "./reportGeneration.js";
+} from "./utils/reportGeneration.js";
 import fs from "fs";
 import path from "path";
-import { humidityAlert, lightAlert, soundAlert, tempAlert } from "./alerts.js";
+import {
+  humidityAlert,
+  lightAlert,
+  soundAlert,
+  tempAlert,
+} from "./utils/alerts.js";
 
 dotenv.config();
 
