@@ -6,7 +6,7 @@ import {
   calculateScores,
   getAverages,
   generateTimelines,
-} from "./report-generation.js";
+} from "./reportGeneration.js";
 import fs from "fs";
 import path from "path";
 import { humidityAlert, lightAlert, soundAlert, tempAlert } from "./alerts.js";
