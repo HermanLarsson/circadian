@@ -22,3 +22,4 @@ describe('Light sensor', () => {
     test('Lux value at 0 accepted', () => {expect(isValidLux(0)).toBe(true)})
     test('Lux value at negative value rejected', () => {expect(isValidLux(-1)).toBe(false)})
 })
+
