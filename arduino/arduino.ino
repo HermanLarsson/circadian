@@ -1,4 +1,5 @@
 #include "arduino_secrets.h"
+#include "TFT_eSPI.h"
 #include "lightSensor.h"
 #include "soundSensor.h"
 #include "tempHumiditySensor.h"
