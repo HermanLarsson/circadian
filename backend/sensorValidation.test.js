@@ -40,4 +40,11 @@ describe('Temperature Sensor', () => {
     test('Temperature above threshold rejected', () => {expect(isValidTemperature(51)).toBe(false)})
 })
 
+describe('Humidity Sensor', () => {
+    test('Humidity at 90 accepted', () => {expect(isValidHumidity(90)).toBe(true) })
+    test('Humidity at 20 accepted', () => {expect(isValidHumidity(20)).toBe(true)})
+    test('Humidity below threshold rejected', () => {expect(isValidHumidity(19)).toBe(false)})
+    test('Humidity above threshold rejected', () => {expect(isValidHumidity(91)).toBe(false)})
+})
+
 
