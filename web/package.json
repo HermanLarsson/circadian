@@ -9,13 +9,15 @@
     "test": "vitest run"
   },
   "dependencies": {
-    "@mantine/charts": "^9.1.1",
-    "@mantine/core": "^9.1.0",
-    "@mantine/hooks": "^9.1.0",
+    "@mantine/charts": "^9.2.0",
+    "@mantine/core": "^9.2.0",
+    "@mantine/dates": "^9.2.0",
+    "@mantine/hooks": "^9.2.0",
     "@react-router/node": "7.14.0",
     "@react-router/serve": "7.14.0",
     "@tabler/icons-react": "^3.44.0",
     "cors": "^2.8.6",
+    "dayjs": "^1.11.20",
     "isbot": "^5.1.36",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
