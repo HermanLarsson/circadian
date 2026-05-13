@@ -5,8 +5,9 @@ import {
   Button,
   Box,
   Center,
-  Space,
+  Space
 } from "@mantine/core";
+import { DateInput } from '@mantine/dates';
 import { index } from "@react-router/dev/routes";
 import { useState } from "react";
 import { useNavigate } from "react-router";
@@ -26,17 +27,21 @@ export default function Signup() {
     let signUpData = {
       username: formData.get("username"),
       password: formData.get("password"),
-      fname: formData.get("fnfname"),
+      fname: formData.get("fname"),
+      mname: formData.get("mname"),
+      lname: formData.get("lname"),
+      dob: formData.get("dob"),
     };
 
-    fetch("/api/login", {
+    fetch("/api/signup", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(loginData),
+      body: JSON.stringify(signupData),
     }).then((res) => {
       if (res.status == 200) {
+
         navigate("/");
       } else if (res.status == 403) {
         setWrongInfoError(true);
@@ -50,7 +55,7 @@ export default function Signup() {
     <div>
       <Container strategy="grid" size={400}>
         <Text fz="h2" ta="center">
-          Log in to Circadian
+          Sign up to Circadian
         </Text>
         <Space h="md" />
         <Center>
@@ -65,8 +70,16 @@ export default function Signup() {
                 required={true}
               />
               <Space h="md" />
+              <TextInput name="fname" label="First Name" required={true} />
+              <Space h="md" />
+              <TextInput name="mname" label="Middle Name" required={true} />
+              <Space h="md" />
+              <TextInput name="lname" label="Last Name" required={true} />
+              <Space h="md" />
+              <DateInput valueFormat="YYYY MMM DD" label="Date of birth" placeholder="Date of birth" valueFormat="YYYY-MM-DD" required={true}/>
+              <Space h="md" />
               <Center>
-                <Button type="submit">Log In</Button>
+                <Button type="submit">Sign up</Button>
               </Center>
               {wrongInfoError && (
                 <Text ta="center" color="red">
