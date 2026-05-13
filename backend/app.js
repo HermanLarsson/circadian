@@ -196,10 +196,38 @@ app.get("/api/report/:date", async (req, res) => {
 });
 
 app.post("/api/signup", async (req, res) => {
-    let accQuery = await db.query("INSERT INTO users (username, password, fname, mname, lname, dob) VALUES ($1, $2, $3, $4, $5, $6);",
-    [req.body.username, req.body.password, req.body.fname, req.body.mname, req.body.lname, req.body.dob]
-    )
-    res.sendStatus(200)
+
+    console.log(req.body)
+    //first checks if the username is taken
+    let result = await db.query(
+    "SELECT * FROM users WHERE username = $1",
+    [req.body.username])
+
+    let errors = []
+    if(result.rows.length > 0){
+        errors.push("Username already taken");
+    }
+    if(req.body.dob > "2011-01-01") {
+        errors.push("Must be 15 years or older");
+    }
+    if(req.body.password != req.body.passwordCheck) {
+        errors.push("Passwords don't match")
+    }
+    if(req.body.password.length < 8) {
+        errors.push("Password needs to be 8 characters")
+    }
+
+    if(errors.length != 0) {
+        console.log(errors)
+        res.statusCode = 403;
+        res.send(errors)
+    } else {
+        let accQuery = await db.query("INSERT INTO users (username, password, fname, mname, lname, dob) VALUES ($1, $2, $3, $4, $5, $6);",
+        [req.body.username, req.body.password, req.body.fname, req.body.mname, req.body.lname, req.body.dob]
+        )
+        console.log(accQuery)
+        res.sendStatus(200)
+    }
 
 })
 
