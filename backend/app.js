@@ -168,7 +168,6 @@ setInterval(() => {
       allAlerts.sound = soundAlert(lastestReading);
     }
   }
-  console.log("ALL ALERTS:", allAlerts);
 }, 5000);
 
 app.get("/", (req, res) => {
@@ -195,6 +194,14 @@ app.get("/api/report/:date", async (req, res) => {
 
   res.send(reportData);
 });
+
+app.post("/api/signup", async (req, res) => {
+    let accQuery = await db.query("INSERT INTO users (username, password, fname, mname, lname, dob) VALUES ($1, $2, $3, $4, $5, $6);",
+    [req.body.username, req.body.password, req.body.fname, req.body.mname, req.body.lname, req.body.dob]
+    )
+    res.sendStatus(200)
+
+})
 
 app.post("/api/login", async (req, res) => {
   //Use response code 200 for OK login, 403 for NOT OK
