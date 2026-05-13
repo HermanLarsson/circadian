@@ -1,5 +1,4 @@
 #include "arduino_secrets.h"
-#include "TFT_eSPI.h"
 #include "lightSensor.h"
 #include "soundSensor.h"
 #include "tempHumiditySensor.h"
@@ -58,7 +57,7 @@ void publishReading(uint16_t value, const char* topic, PubSubClient& pubSubClien
 
 TFT_eSPI tft;
 
-lightSensor theLightSensor(WIO_LIGHT); //Instance of LightSensor with built in pin
+lightSensor theLightSensor(6); //Instance of LightSensor with pin 6
 soundSensor theSoundSensor(3); //Instance of SoundSensor with pin 3
 tempHumiditySensor thetempHumiditySensor(0, DHT11); //Instance of TempHumiditySensor with pin 0 and type DHT11
 DHT dht(thetempHumiditySensor.getPin(), thetempHumiditySensor.getType());
@@ -100,8 +99,9 @@ void loop() {
     //LightSensor
     theLightSensor.updateSensorVal();
     uint16_t luxVal = theLightSensor.getLuxVal();
-    tft.drawString("LIGHT", 30, 10);
-    tft.drawNumber(luxVal, 50, 50);
+    tft.drawString("LIGHT", 10, 10);
+    tft.drawNumber(luxVal, 10, 50);
+    tft.drawString("Lux", 90, 50);
     publishReading(luxVal, "light", mqttClient);
 
     //SoundSensor
@@ -109,6 +109,7 @@ void loop() {
     uint16_t dBVal = theSoundSensor.getCovertedSoundVal();
     tft.drawString("SOUND", 170, 10);
     tft.drawNumber(dBVal, 200, 50);
+    tft.drawString("dB", 260, 50);
     publishReading(dBVal, "sound", mqttClient);
 
     //TempHumiditySensor
@@ -116,11 +117,13 @@ void loop() {
     uint16_t percentVal = thetempHumiditySensor.getHumidityVal();
     tft.drawString("HUMI", 30, 130);
     tft.drawNumber(percentVal, 50, 170);
+    tft.drawString("%", 100, 170);
     publishReading(percentVal, "humidity", mqttClient);
 
     uint16_t degreeVal = thetempHumiditySensor.getTempVal();
     tft.drawString("TEMP", 170, 130);
     tft.drawNumber(degreeVal, 200, 170);
+    tft.drawString("c", 250, 170);
     publishReading(degreeVal, "temperature", mqttClient);
 
 
