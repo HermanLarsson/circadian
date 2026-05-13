@@ -10,7 +10,7 @@
   },
   "type": "module",
   "scripts": {
-    "dev": "nodemon app.js",
+    "dev": "nodemon --ignore 'utils/*.test.js' app.js",
     "test": "vitest run"
   },
   "devDependencies": {
