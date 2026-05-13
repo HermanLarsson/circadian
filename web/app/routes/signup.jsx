@@ -44,6 +44,7 @@ export default function Signup() {
       body: JSON.stringify(signUpData),
     }).then((res) => {
       if (res.status == 200) {
+        setSignUpErrors([]);
         setSignUpSuccess(true);
         setTimeout(() => {
           navigate("/login");
