@@ -24,8 +24,8 @@ describe('Light sensor', () => {
 })
 
 describe('Sound Sensor', () => {
-    test('Sound value at 120 accepted', () => {expect(isValidLux(120)).toBe(true) })
-    test('Sound value at 0 accepted', () => {expect(isValidLux(0)).toBe(true)})
-    test('Sound value at negative value rejected', () => {expect(isValidLux(-1)).toBe(false)})
+    test('Sound value at 120 accepted', () => {expect(isValidSound(120)).toBe(true) })
+    test('Sound value at 0 accepted', () => {expect(isValidSound(0)).toBe(true)})
+    test('Sound value at negative value rejected', () => {expect(isValidSound(-1)).toBe(false)})
 })
 
