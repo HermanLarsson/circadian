@@ -1,15 +1,10 @@
+import { optimalValues } from "./optimalValues.js";
+
 const maxDistances = {
   temperature: 10,
   humidity: 10,
   light: 50,
   sound: 30,
-};
-
-const optimalValues = {
-  temperature: 19,
-  humidity: 50,
-  light: 30,
-  sound: 40,
 };
 
 //Simple averaging
@@ -25,7 +20,7 @@ export function getAverages(sensorData) {
 
   for (const [type, values] of Object.entries(avgData)) {
     avgData[type] = Math.round(
-      values.reduce((acc, val) => acc + val, 0) / values.length,
+      values.reduce((acc, val) => acc + val, 0) / values.length
     );
   }
   return avgData;
