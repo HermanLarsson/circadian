@@ -125,6 +125,19 @@ app.get("/api/report/:date", async (req, res) => {
   res.send(reportData);
 });
 
+app.get("/api/report/all/dates", async (req, res) => {
+
+  let result = await db.query(
+    "SELECT DISTINCT CAST(date_recorded AS VARCHAR) FROM sensor_data WHERE user_id=$1",  
+    [user_id],
+  );
+
+  //console.log(result.rows);
+
+  res.send(result.rows);
+});
+  
+
 app.listen(port, () => {
   console.log(`Circadian App on port ${port}`);
 });
