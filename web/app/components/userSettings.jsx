@@ -11,8 +11,8 @@ import { useEffect, useState } from 'react';
 //TODO: Make it get user stuff
 const initialLabels = [
     { label: "Name:", value: ""},
-    { label: "Bedtime:", value: ""},
     { label: "Date of Birth:", value: ""},
+    { label: "Bedtime:", value: ""},
     { label: "Tracking Length:", value: ""},
 ] 
 
@@ -28,13 +28,10 @@ function UserSettings() {
           .then((res) => res.json())
           .then((data) => {
             buffer[0] = {... buffer[0], value: data[0]["fname"] + " " + data[0]["mname"] + " " + data[0]["lname"]};
-            buffer[1] = {... buffer[1], value: data[0]["bedtime"]};
-            buffer[2] = {... buffer[2], value: data[0]["dob"]};
+            buffer[1] = {... buffer[1], value: data[0]["dob"]};
+            buffer[2] = {... buffer[2], value: data[0]["bedtime"]};
             buffer[3] = {... buffer[3], value: data[0]["tracking_length"]};
-
             setLabels(buffer);
-            console.log("labels");
-            console.log(buffer);
           })
     }, []);
 
