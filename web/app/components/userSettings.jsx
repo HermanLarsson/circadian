@@ -6,21 +6,37 @@ import {
     Flex  //TODO:Remove this if not used
 } from '@mantine/core';
 import { useNavigate } from 'react-router';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 //TODO: Make it get user stuff
 const initialLabels = [
-    { label: "Name:", value: "ADD NAME QUERY"},
-    { label: "Bedtime:", value: "ADD BEDTIME QUERY"},
-    { label: "Date of Birth:", value: "ADD DATE QUERY"},
-    { label: "Tracking Length:", value: "ADD TRACKING LENGTH QUERY"},
+    { label: "Name:", value: ""},
+    { label: "Bedtime:", value: ""},
+    { label: "Date of Birth:", value: ""},
+    { label: "Tracking Length:", value: ""},
 ] 
 
 function UserSettings() {
     const [value, setValue] = useState("");
-
+    const [userData, setUserData] = useState([]);
     const [labels, setLabels] = useState(initialLabels);
     const [editing, setEditing] = useState(false);
+
+    useEffect(() => {
+        const buffer = [...initialLabels];
+        fetch("../api/user/details")
+          .then((res) => res.json())
+          .then((data) => {
+            buffer[0] = {... buffer[0], value: data[0]["fname"] + " " + data[0]["mname"] + " " + data[0]["lname"]};
+            buffer[1] = {... buffer[1], value: data[0]["bedtime"]};
+            buffer[2] = {... buffer[2], value: data[0]["dob"]};
+            buffer[3] = {... buffer[3], value: data[0]["tracking_length"]};
+
+            setLabels(buffer);
+            console.log("labels");
+            console.log(buffer);
+          })
+    }, []);
 
     const handelChange = (index, newValue) => {
         const updatedLabels = [...labels];
