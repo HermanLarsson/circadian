@@ -4,29 +4,32 @@ import {
     InputBase, 
     Combobox, 
     useCombobox,
+    Select,
 } from '@mantine/core';
 import { useNavigate } from 'react-router';
 import { useState } from 'react';
 
-//TODO: Change to find dates from DB
-const availableDates = ["2026-04-20", "2", "3", "4", "5"];
-
 function ReportDropdown() {
+    //TODO: Change to find dates from DB
+    const [availableDates, setAvailableDates] = useState(["2026-04-20", "2", "3", "4", "5"]);
     const navigate = useNavigate();
     const combobox = useCombobox({
         onDropdownClose: () => combobox.resetSelectedOption(),
     });
-    
-    const [value, setValue] = useState(null);
-
-    const options = availableDates.map((item) => (
-        <Combobox.Option value={item} key={item}>
-            {item}
-        </Combobox.Option>
-    ));
 
     return (
-            <Combobox
+        <>
+            <Select
+                label="Dates:"
+                placeholder="Pick date"
+                searchable
+                maxDropdownHeight={100}
+                data={availableDates}      
+                onChange={(date) => navigate("../report/" + date)}          
+            />
+
+
+            {/*<Combobox
                 store={combobox}
                 onOptionSubmit={(val) => {
                     setValue(val);
@@ -49,7 +52,8 @@ function ReportDropdown() {
                 <Combobox.Dropdown>
                     <Combobox.Options>{options}</Combobox.Options>
                 </Combobox.Dropdown>
-            </Combobox>
+            </Combobox>*/}
+        </>
     )
 }
 export default ReportDropdown;    
