@@ -1,9 +1,4 @@
 import { 
-    Button,
-    Input, 
-    InputBase, 
-    Combobox, 
-    useCombobox,
     Select,
 } from '@mantine/core';
 import { useNavigate } from 'react-router';
@@ -14,10 +9,6 @@ function ReportDropdown() {
     const [rawAvailableDates, setRawAvailableDates] = useState([]);
     const [availableDates, setAvailableDates] = useState([]);
     const navigate = useNavigate();
-
-    const combobox = useCombobox({
-        onDropdownClose: () => combobox.resetSelectedOption(),
-    });
 
     useEffect(() => {
 
@@ -36,7 +27,6 @@ function ReportDropdown() {
       }, []);
 
     return (
-        <>
             <Select
                 label="Dates:"
                 placeholder="Pick date"
@@ -45,41 +35,6 @@ function ReportDropdown() {
                 data={availableDates}      
                 onChange={(date) => navigate("../report/" + date)}          
             />
-
-            {/*<Combobox
-                store={combobox}
-                onOptionSubmit={(val) => {
-                    setValue(val);
-                    console.log(combobox.selectedOptionIndex);
-                    combobox.closeDropdown();
-                    navigate("../report/" + val);
-                }}
-            >
-                <Combobox.Target>
-                    <InputBase
-                        component="button"
-                        type="button"
-                        pointer
-                        rightSection={<Combobox.Chevron />}
-                        rightSectionPointerEvents="none"
-                        onClick={() => combobox.toggleDropdown()}
-                    >
-                        {value ?? "View Reports"}
-                    </InputBase>
-                </Combobox.Target>
-                <Combobox.Dropdown>
-                    <Combobox.Options>
-                        {availableDates.length != 0 &&
-                            availableDates.map((date) => (
-                                <Combobox.Option key={date}>
-                                    {date["date_recorded"]}
-                                </Combobox.Option>
-                                ))
-                        }
-                </Combobox.Options>
-                </Combobox.Dropdown>
-            </Combobox>*/}
-        </>
     )
 }
 export default ReportDropdown;    
