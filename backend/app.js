@@ -136,6 +136,18 @@ app.get("/api/report/all/dates", async (req, res) => {
 
   res.send(result.rows);
 });
+
+app.get("/api/user/details", async (req, res) => {
+
+  let result = await db.query(
+    "select fname, mname, lname, CAST(dob AS VARCHAR) from users where id=$1",  
+    [user_id],
+  );
+
+  //console.log(result.rows);
+
+  res.send(result.rows);
+});
   
 
 app.listen(port, () => {
