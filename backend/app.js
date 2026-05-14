@@ -140,11 +140,11 @@ app.get("/api/report/all/dates", async (req, res) => {
 app.get("/api/user/details", async (req, res) => {
 
   let result = await db.query(
-    "select fname, mname, lname, CAST(dob AS VARCHAR) from users where id=$1",  
+    "SELECT fname, mname, lname, CAST(dob AS VARCHAR), bedtime, tracking_length FROM users, settings WHERE id=$1 AND user_id=$1",  
     [user_id],
   );
 
-  //console.log(result.rows);
+  console.log(result.rows);
 
   res.send(result.rows);
 });
