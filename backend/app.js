@@ -14,6 +14,7 @@ dotenv.config();
 const { client } = await import("./mqtt.js");
 
 const app = express();
+app.use(express.json());
 const port = process.env.PORT;
 
 // TODO: harcoded user for now, update later.
