@@ -3,12 +3,11 @@ import {
     Grid, 
     Button,
     TextInput,
-    Flex  //TODO:Remove this if not used
+    Paper
 } from '@mantine/core';
-import { useNavigate } from 'react-router';
 import { useEffect, useState } from 'react';
 
-//TODO: Make it get user stuff
+//Initilise an "interface" array of labels
 const initialLabels = [
     { label: "Name:", value: ""},
     { label: "Date of Birth:", value: ""},
@@ -17,20 +16,22 @@ const initialLabels = [
 ] 
 
 function UserSettings() {
-    const [value, setValue] = useState("");
     const [labels, setLabels] = useState(initialLabels);
     const [tmpLabels, setTmpLabels] = useState([]);
     const [editing, setEditing] = useState(false);
 
+    //Fetches data from the query that gets user details/settings
     useEffect(() => {
         const buffer = [...initialLabels];
         const mname = "";
         fetch("../api/user/details")
           .then((res) => res.json())
           .then((data) => {
+            //Only need to check middle name since everything has to exist in the db
             if (data[0]["mname"] != null) {
                 const mname = data[0]["mname"];
             }
+
             buffer[0] = {... buffer[0], value: `${data[0]["fname"]} ${mname} ${data[0]["lname"]}`};
             buffer[1] = {... buffer[1], value: data[0]["dob"]};
             buffer[2] = {... buffer[2], value: data[0]["bedtime"]};
@@ -39,21 +40,24 @@ function UserSettings() {
           })
     }, []);
 
+    //Handels the editing settings and store it in a tmpLabel
     const handelChange = (index, newValue) => {
         const updatedLabels = [...tmpLabels];
         updatedLabels[index] = { ...updatedLabels[index], value: newValue};
         setTmpLabels(updatedLabels);
     }
 
+    //Handels the checking and sending of data to the db
     const handleSave = () => {
         const result = tmpLabels.every(checkLabels);
 
         if (result) {
-            let [fname, mname, lname] = tmpLabels[0].value.split(" ");
+            let [fname, mname, lname] = tmpLabels[0].value.split(" ");//Split whole name to pass in each part of the name
             if (lname == undefined) {
                 lname = mname;
                 mname = null;
             }
+            //Sends the data to the queries for updating the db
             fetch("../api/user/update", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
@@ -128,68 +132,62 @@ function UserSettings() {
     return (
     <>
         <h1>User Settings</h1>
-        <Grid bg="gray" mt="50" mih="300">
+        <Grid mt="50" mih="300">
             {labels.map((label, index) => (
                 <Grid.Col 
-                    key={label.label} 
-                    span={3} 
-                    bg="orange" 
-                    mih="100" 
-                    pl="10"
-                    style={{ display: "flex", alignItems: "flex-start", flexDirection: "column"}}
+                  key={label.label} 
+                  span="content" 
+                  mih="100" 
+                  pl="10"
+                  style={{ display: "flex", alignItems: "flex-start", flexDirection: "column"}}
                 >
-                    <Text style={{color: "black"}}>{label.label}</Text>
+                    <Paper withBorder p="md" radius="md" key={label.label}>
+                    <Text 
+                      size="xl" 
+                      fw={600} 
+                      style={{color: "var(--mantine-color-gray-4)"}}>
+                        {label.label}
+                    </Text>
+
                     {editing ? (
                         <TextInput
                             defaultValue={label.value}
                             onChange={(newVal) => {handelChange(index, newVal.target.value)}}
                         />
                     ) : (   
-                        <Text style={{color: "black"}}>{label.value}</Text>
-                    )}                                
+                        <Text 
+                          size="lg"
+                          style={{color: "var(--mantine-color-gray-4)"}}>
+                            {label.value}
+                        </Text>
+                    )}       
+                    </Paper>                         
                 </Grid.Col> 
+                
             ))}
-            <Grid.Col
-                span={12} pl="10"
-            >
-                <Button variant="filled" onClick={editing ? handleSave : () => {
+               
+            <Grid.Col span={12} pl="10">
+                <Button
+                  variant="filled" 
+                  color="green" 
+                  onClick={editing ? handleSave : () => {
                     setTmpLabels([...labels]);
                     setEditing(!editing);
                 }}>
                     {editing ? "Save Settings" : "Edit Settings"}
                 </Button>
                 {editing &&
-                    <Button variant="filled" color="red" ml="10" onClick={() => setEditing(!editing)}>
+                    <Button
+                      variant="filled" 
+                      color="red" 
+                      ml="10" 
+                      onClick={() => setEditing(!editing)}>
                         Cancel Settings
                     </Button>
                 }
             </Grid.Col>
         </Grid>
-
-        {/*<Flex
-
-            mih={500}
-            bg="rgba(0, 0, 0, .3)"
-            gap="md"
-            justify="center"
-            align="center"
-            wrap="wrap"
-        >
-            <Text size="sm">Box 1</Text>
-        </Flex>
-        
-        <Flex
-  
-            mih={500}
-            bg="rgba(0, 0, 0, .3)"
-            gap="md"
-            justify="center"
-            align="center"
-            wrap="wrap"
-        >
-            <Text size="sm">Box 2</Text>
-        </Flex>*/}
-        </>
+    </>
     );
 }
 
