@@ -58,10 +58,10 @@ void publishReading(uint16_t value, const char* topic, PubSubClient& pubSubClien
 
 TFT_eSPI tft;
 
-lightSensor theLightSensor(6); //Instance of LightSensor with pin 6
-soundSensor theSoundSensor(3); //Instance of SoundSensor with pin 3
-tempHumiditySensor thetempHumiditySensor(0, DHT11); //Instance of TempHumiditySensor with pin 0 and type DHT11
-DHT dht(thetempHumiditySensor.getPin(), thetempHumiditySensor.getType());
+lightSensor lightSens(6); //Instance of LightSensor with pin 6
+soundSensor soundSens(3); //Instance of SoundSensor with pin 3
+tempHumiditySensor tempHumiditySens(0, DHT11); //Instance of TempHumiditySensor with pin 0 and type DHT11
+DHT dht(tempHumiditySens.getPin(), tempHumiditySens.getType());
 
 int loopInterval = 2000;
 int oldTime = 0;
@@ -98,30 +98,30 @@ void loop() {
    tft.drawFastVLine(160, 0, 240, TFT_BLACK);
 
     //LightSensor
-    theLightSensor.updateSensorVal();
-    uint16_t luxVal = theLightSensor.getLuxVal();
+    lightSens.updateSensorVal();
+    uint16_t luxVal = lightSens.getLuxVal();
     tft.drawString("LIGHT", 10, 10);
     tft.drawNumber(luxVal, 10, 50);
     tft.drawString("Lux", 90, 50);
     publishReading(luxVal, "light", mqttClient);
 
     //SoundSensor
-    theSoundSensor.updateSensorVal();
-    uint16_t dBVal = theSoundSensor.getCovertedSoundVal();
+    soundSens.updateSensorVal();
+    uint16_t dBVal = soundSens.getCovertedSoundVal();
     tft.drawString("SOUND", 170, 10);
     tft.drawNumber(dBVal, 200, 50);
     tft.drawString("dB", 260, 50);
     publishReading(dBVal, "sound", mqttClient);
 
     //TempHumiditySensor
-    thetempHumiditySensor.updateSensorVal(dht);
-    uint16_t percentVal = thetempHumiditySensor.getHumidityVal();
+    tempHumiditySens.updateSensorVal(dht);
+    uint16_t percentVal = tempHumiditySens.getHumidityVal();
     tft.drawString("HUMI", 30, 130);
     tft.drawNumber(percentVal, 50, 170);
     tft.drawString("%", 100, 170);
     publishReading(percentVal, "humidity", mqttClient);
 
-    uint16_t degreeVal = thetempHumiditySensor.getTempVal();
+    uint16_t degreeVal = tempHumiditySens.getTempVal();
     tft.drawString("TEMP", 170, 130);
     tft.drawNumber(degreeVal, 200, 170);
     tft.drawString("c", 250, 170);
