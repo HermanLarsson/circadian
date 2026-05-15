@@ -23,7 +23,6 @@ dotenv.config();
 const { client } = await import("./mqtt.js");
 const __dirname = import.meta.dirname;
 const app = express();
-app.use(express.json());
 const port = process.env.PORT;
 
 app.use(express.json());
@@ -228,13 +227,13 @@ app.get("/api/alerts", (req, res) => {
 });
 
 app.get("/api/report/all/dates", async (req, res) => {
-
+  
   let result = await db.query(
     "SELECT DISTINCT CAST(date_recorded AS VARCHAR) FROM sensor_data WHERE user_id=$1",  
-    [user_id],
+    [parseInt(user_id.toString())],
   );
 
-  //console.log(result.rows);
+  console.log(result.rows);
 
   res.send(result.rows);
 });
@@ -243,7 +242,7 @@ app.get("/api/user/details", async (req, res) => {
 
   let result = await db.query(
     "SELECT fname, mname, lname, CAST(dob AS VARCHAR), bedtime, tracking_length FROM users, settings WHERE id=$1 AND user_id=$1",  
-    [user_id],
+    [parseInt(user_id.toString())],
   );
 
   console.log(result.rows);
@@ -254,10 +253,27 @@ app.get("/api/user/details", async (req, res) => {
 app.post("/api/user/update", async (req, res) => {
   const { finame, miname, laname, dob, bedtime, trackingLength} = req.body;
   console.log(req.body);
-  db.query (
-    "",
-    []
-  )
+  await db.query (
+    "UPDATE users SET fname=$1, mname=$2, lname=$3, dob=$4 WHERE id=$5",
+    [ finame, miname, laname, dob, parseInt(user_id.toString())],
+    (err, result) => {
+      if (err) {
+        res.status(500).json({error: err});
+        return;
+      }
+      db.query(
+        "UPDATE settings SET bedtime=$1, tracking_length=$2 WHERE user_id=$3",
+        [ bedtime, trackingLength, parseInt(user_id.toString())],
+        (err, result) => {
+          if (err) {
+            res.status(500).json({error: err});
+            return;
+          }
+          res.json({ success: true})
+        }
+      )
+      }
+    )
 });
 
 app.listen(port, () => {
