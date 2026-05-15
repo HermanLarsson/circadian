@@ -13,13 +13,13 @@ const initialLabels = [
     { label: "Name:", value: ""},
     { label: "Date of Birth:", value: ""},
     { label: "Bedtime:", value: ""},
-    { label: "Tracking Length:", value: ""},
+    { label: "Tracking Length (min):", value: ""},
 ] 
 
 function UserSettings() {
     const [value, setValue] = useState("");
-    const [userData, setUserData] = useState([]);
     const [labels, setLabels] = useState(initialLabels);
+    const [tmpLabels, setTmpLabels] = useState(labels);
     const [editing, setEditing] = useState(false);
 
     useEffect(() => {
@@ -27,7 +27,7 @@ function UserSettings() {
         fetch("../api/user/details")
           .then((res) => res.json())
           .then((data) => {
-            buffer[0] = {... buffer[0], value: data[0]["fname"] + " " + data[0]["mname"] + " " + data[0]["lname"]};
+            buffer[0] = {... buffer[0], value: `${data[0]["fname"]} ${data[0]["mname"]} ${data[0]["lname"]}`};
             buffer[1] = {... buffer[1], value: data[0]["dob"]};
             buffer[2] = {... buffer[2], value: data[0]["bedtime"]};
             buffer[3] = {... buffer[3], value: data[0]["tracking_length"]};
@@ -36,9 +36,24 @@ function UserSettings() {
     }, []);
 
     const handelChange = (index, newValue) => {
-        const updatedLabels = [...labels];
+        const updatedLabels = [...tmpLabels];
         updatedLabels[index] = { ...updatedLabels[index], value: newValue};
-        setLabels(updatedLabels);
+        setTmpLabels(updatedLabels);
+    }
+
+    const handleSave = () => {
+        const result = tmpLabels.every(checkLabels);
+        console.log(result);
+
+        if (result) {
+            setLabels(tmpLabels);
+            setEditing(false);
+        } 
+    }
+
+    function checkLabels(item, index, arr) {
+
+        return true
     }
 
     return (
@@ -57,7 +72,13 @@ function UserSettings() {
                     <Text style={{color: "black"}}>{label.label}</Text>
                     {editing ? (
                         <TextInput
-                            onChange={(newVal) => handelChange(index, newVal.target.value)}
+                            onChange={(newVal) => {if (newVal.target.value == "") {
+                                    console.log(labels[index].label + " can't be empty")
+                                }
+                                else {
+                                    handelChange(index, newVal.target.value)}
+                                }
+                            }
                         />
                     ) : (   
                         <Text style={{color: "black"}}>{label.value}</Text>
@@ -67,9 +88,14 @@ function UserSettings() {
             <Grid.Col
                 span={12} pl="10"
             >
-                <Button variant="filled" onClick={() => setEditing(!editing)}>
+                <Button variant="filled" onClick={editing ? handleSave : () => setEditing(!editing)}>
                     {editing ? "Save Settings" : "Edit Settings"}
                 </Button>
+                {editing &&
+                    <Button variant="filled" color="red" ml="10" onClick={() => setEditing(!editing)}>
+                        Cancel Settings
+                    </Button>
+                }
             </Grid.Col>
         </Grid>
 
