@@ -1,3 +1,4 @@
+#include "arduino_secrets.h"
 #include "TFT_eSPI.h"
 #include "lightSensor.h"
 #include "soundSensor.h"
@@ -6,7 +7,6 @@
 #include <PubSubClient.h>
 #include "Certs.h"
 #include <rpcWiFi.h>
-#define MQTT_PORT 8883
 
 // Create WiFiClientSecure instance
 WiFiClientSecure wifiClient;
