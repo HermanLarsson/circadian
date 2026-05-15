@@ -149,6 +149,14 @@ app.get("/api/user/details", async (req, res) => {
   res.send(result.rows);
 });
   
+app.post("/api/user/update", async (req, res) => {
+  const { finame, miname, laname, dob, bedtime, trackingLength} = req.body;
+  console.log(req.body);
+  db.query (
+    "",
+    []
+  )
+});
 
 app.listen(port, () => {
   console.log(`Circadian App on port ${port}`);
