@@ -226,6 +226,7 @@ app.get("/api/alerts", (req, res) => {
   res.json(allAlerts);
 });
 
+//Query for getting all dates for logged in user
 app.get("/api/report/all/dates", async (req, res) => {
   
   let result = await db.query(
@@ -233,11 +234,10 @@ app.get("/api/report/all/dates", async (req, res) => {
     [parseInt(user_id.toString())],
   );
 
-  console.log(result.rows);
-
   res.send(result.rows);
 });
 
+//Query for getting user details/settings for logged in user
 app.get("/api/user/details", async (req, res) => {
 
   let result = await db.query(
@@ -245,28 +245,31 @@ app.get("/api/user/details", async (req, res) => {
     [parseInt(user_id.toString())],
   );
 
-  console.log(result.rows);
-
   res.send(result.rows);
 });
   
+//Query for updating logged in users details/settings
 app.post("/api/user/update", async (req, res) => {
-  const { finame, miname, laname, dob, bedtime, trackingLength} = req.body;
-  console.log(req.body);
+  const { fname, mname, lname, dob, bedtime, trackingLength} = req.body;
+  
+  //Query for user details
   await db.query (
     "UPDATE users SET fname=$1, mname=$2, lname=$3, dob=$4 WHERE id=$5",
-    [ finame, miname, laname, dob, parseInt(user_id.toString())],
+    [ fname, mname, lname, dob, parseInt(user_id.toString())],
+    
     (err, result) => {
       if (err) {
-        res.status(500).json({error: err});
+        console.log(`Error: ${err} \nQuery Result: ${result}`)
         return;
       }
+      //Second query for user settings
       db.query(
         "UPDATE settings SET bedtime=$1, tracking_length=$2 WHERE user_id=$3",
         [ bedtime, trackingLength, parseInt(user_id.toString())],
+        
         (err, result) => {
           if (err) {
-            res.status(500).json({error: err});
+            console.log(`Error: ${err} \nQuery Result: ${result}`)
             return;
           }
           res.json({ success: true})

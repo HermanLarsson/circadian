@@ -58,9 +58,9 @@ function UserSettings() {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                    finame: fname,
-                    miname: mname,
-                    laname: lname,
+                    fname: fname,
+                    mname: mname,
+                    lname: lname,
                     dob: tmpLabels[1].value,
                     bedtime: tmpLabels[2].value,
                     trackingLength: tmpLabels[3].value,
