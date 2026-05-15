@@ -19,7 +19,7 @@ const initialLabels = [
 function UserSettings() {
     const [value, setValue] = useState("");
     const [labels, setLabels] = useState(initialLabels);
-    const [tmpLabels, setTmpLabels] = useState(labels);
+    const [tmpLabels, setTmpLabels] = useState([]);
     const [editing, setEditing] = useState(false);
 
     useEffect(() => {
@@ -43,7 +43,6 @@ function UserSettings() {
 
     const handleSave = () => {
         const result = tmpLabels.every(checkLabels);
-        console.log(result);
 
         if (result) {
             setLabels(tmpLabels);
@@ -56,35 +55,47 @@ function UserSettings() {
         const dobRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/; //Allows for "YYYY-MM-DD"
         const bedtimeRegex = /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/; //Allows for "HH:MM:SS"
         const trackingRegex = /^\d+$/; //Allows for any string of only numbers
-
-        if (index == 0) { //Checking name
-            if (!nameRegex.test(item.value)) {
-                alert("Not a valid name.\nName must includes: Firstname, Middlename (optional), Lastname")
+        
+        if (index == 0 && !nameRegex.test(item.value)) { //Checking name
+                if (item.value == "") {
+                    item.value = labels[index].value;
+                    return true;
+                }
+                alert(`${item.value} not a valid name.\nName must includes: Firstname, Middlename (optional), Lastname`)
                 return false
-            }
         }
 
-        else if (index == 1) { //Checking Date of Birth
-            if (!dobRegex.test(item.value)) {
-                alert("Not a valid date of birth.\nDate of birth follows this format: YYYY-MM-DD")
+        else if (index == 1 && !dobRegex.test(item.value)) { //Checking Date of Birth
+                if (item.value == "") {
+                    item.value = labels[index].value;
+                    return true;
+                }
+                alert(`${item.value} not a valid date of birth.\nDate of birth follows this format: YYYY-MM-DD`)
                 return false
-            }
         }
 
-        else if (index == 2) { //Checking Bedtime
-            if (!bedtimeRegex.test(item.value)) {
-                alert("Not a valid bedtime.\nBedtime follows this format: HH:MM:SS")
+        else if (index == 2 && !bedtimeRegex.test(item.value)) { //Checking Bedtime
+                if (item.value == "") {
+                    item.value = labels[index].value;
+                    return true;
+                }
+                alert(`${item.value} not a valid bedtime.\nBedtime follows this format: HH:MM:SS`)
                 return false
-            }
         }
 
-        else { //Checking Tracking length
-            if (!trackingRegex.test(item.value)) {
-                alert("Not a valid tracking length.\nTracking length can only be positive numbers.")
+        else if (index == 3 && !trackingRegex.test(item.value)){ //Checking Tracking length
+            console.log(item.value);
+                if (item.value == "") {
+                    item.value = labels[index].value;
+                    return true;
+                }
+                alert(`${item.value} not a valid tracking length.\nTracking length can only be positive whole numbers.`)
                 return false
-            }
         }
-        return true
+        else {
+            console.log(`Value ${item.value} looks good`)
+            return true
+        }
     }
 
     return (
@@ -103,13 +114,8 @@ function UserSettings() {
                     <Text style={{color: "black"}}>{label.label}</Text>
                     {editing ? (
                         <TextInput
-                            onChange={(newVal) => {if (newVal.target.value == "") {
-                                    console.log(labels[index].label + " can't be empty")
-                                }
-                                else {
-                                    handelChange(index, newVal.target.value)}
-                                }
-                            }
+                            defaultValue={label.value}
+                            onChange={(newVal) => {handelChange(index, newVal.target.value)}}
                         />
                     ) : (   
                         <Text style={{color: "black"}}>{label.value}</Text>
@@ -119,7 +125,10 @@ function UserSettings() {
             <Grid.Col
                 span={12} pl="10"
             >
-                <Button variant="filled" onClick={editing ? handleSave : () => setEditing(!editing)}>
+                <Button variant="filled" onClick={editing ? handleSave : () => {
+                    setTmpLabels([...labels]);
+                    setEditing(!editing);
+                }}>
                     {editing ? "Save Settings" : "Edit Settings"}
                 </Button>
                 {editing &&
