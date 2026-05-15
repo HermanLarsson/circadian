@@ -24,10 +24,14 @@ function UserSettings() {
 
     useEffect(() => {
         const buffer = [...initialLabels];
+        const mname = "";
         fetch("../api/user/details")
           .then((res) => res.json())
           .then((data) => {
-            buffer[0] = {... buffer[0], value: `${data[0]["fname"]} ${data[0]["mname"]} ${data[0]["lname"]}`};
+            if (data[0]["mname"] != null) {
+                const mname = data[0]["mname"];
+            }
+            buffer[0] = {... buffer[0], value: `${data[0]["fname"]} ${mname} ${data[0]["lname"]}`};
             buffer[1] = {... buffer[1], value: data[0]["dob"]};
             buffer[2] = {... buffer[2], value: data[0]["bedtime"]};
             buffer[3] = {... buffer[3], value: data[0]["tracking_length"]};
