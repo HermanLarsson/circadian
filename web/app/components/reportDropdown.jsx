@@ -1,17 +1,14 @@
-import { 
-    Select,
-} from '@mantine/core';
+import { Select } from '@mantine/core';
 import { useNavigate } from 'react-router';
 import { useState, useEffect } from 'react';
-import '@mantine/core/styles.css';
 
 function ReportDropdown() {
     const [rawAvailableDates, setRawAvailableDates] = useState([]);
     const [availableDates, setAvailableDates] = useState([]);
     const navigate = useNavigate();
 
+    //Fetches all dates available from logged in user
     useEffect(() => {
-
         fetch("../api/report/all/dates")
           .then((res) => res.json())
           .then((data) => {
@@ -30,7 +27,8 @@ function ReportDropdown() {
         <>
             <h1>View Reports</h1>
             <Select
-                placeholder="Pick date"
+                variant="filled"
+                placeholder="Choose a date to view report"
                 searchable
                 maxDropdownHeight={100}
                 data={availableDates}      
