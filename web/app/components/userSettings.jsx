@@ -52,7 +52,38 @@ function UserSettings() {
     }
 
     function checkLabels(item, index, arr) {
+        const nameRegex = /^[A-Za-z]+(\s[A-Za-z]+){1,2}$/; //Allows for "fname lname" or "fname mname lnaem"
+        const dobRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/; //Allows for "YYYY-MM-DD"
+        const bedtimeRegex = /^([01]\d|2[0-3]):[0-5]\d:[0-5]\d$/; //Allows for "HH:MM:SS"
+        const trackingRegex = /^\d+$/; //Allows for any string of only numbers
 
+        if (index == 0) { //Checking name
+            if (!nameRegex.test(item.value)) {
+                alert("Not a valid name.\nName must includes: Firstname, Middlename (optional), Lastname")
+                return false
+            }
+        }
+
+        else if (index == 1) { //Checking Date of Birth
+            if (!dobRegex.test(item.value)) {
+                alert("Not a valid date of birth.\nDate of birth follows this format: YYYY-MM-DD")
+                return false
+            }
+        }
+
+        else if (index == 2) { //Checking Bedtime
+            if (!bedtimeRegex.test(item.value)) {
+                alert("Not a valid bedtime.\nBedtime follows this format: HH:MM:SS")
+                return false
+            }
+        }
+
+        else { //Checking Tracking length
+            if (!trackingRegex.test(item.value)) {
+                alert("Not a valid tracking length.\nTracking length can only be positive numbers.")
+                return false
+            }
+        }
         return true
     }
 
