@@ -1,10 +1,15 @@
 {
   "dependencies": {
+    "cors": "^2.8.6",
     "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mqtt": "^5.15.1",
+    "nodemon": "^3.1.14",
     "pg": "^8.20.0",
     "postgres": "^3.4.9"
   },
-  "type": "module"
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app.js"
+  }
 }

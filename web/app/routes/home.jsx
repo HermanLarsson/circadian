@@ -1,3 +1,4 @@
+import Alert from "../components/alert";
 import UserSettings from "../components/userSettings";
 import ReportDropdown from "../components/reportDropdown";
 
@@ -10,9 +11,11 @@ export function meta() {
 
 export default function Home() {
   return (
-  <>
-    <ReportDropdown />
-    <UserSettings />
-  </>
+    <div>
+      <h1>Circadian</h1>
+      <Alert />
+      <ReportDropdown />
+      <UserSettings />
+    </div>
   );
 }
