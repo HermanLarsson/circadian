@@ -40,9 +40,9 @@ _link to video here..._
 
 ## System Architecture
 
-Below is a representation of how data will flow through the Circadian system. The Application tier and the Hardware tier are separated by a Broker tier. Within the Application tier data flows to the Web App (frontend/UI) and the Database via the server.
+Below is a representation of our two-tier system and how data will flow through the Circadian system. The Application tier and the Hardware tier are separated by an MQTT Broker. Within the Application tier data flows to the Web App (frontend/UI) and the Database via the Express.js server.
 
-<img src="images/system_architecture.png"/>
+<img src="images/SystemArchitecture.png"/>
 
 # Getting Started
 
@@ -119,9 +119,7 @@ psql -U postgres -c "CREATE DATABASE circadian;"
 psql -U postgres -d circadian -f backend/db/schema.sql
 ```
 
-_TODO: Make a arduino_secrets.h.example file_
-
-3. Open arduino/arduino_secrets.h and update with your credentials:
+3. Create an arduino_secrets.h in the arduino folder paste in following. Update the values with your credentials:
 
 ```
 #define WIFI_NAME "ADD_NETWORK_NAME"
@@ -189,7 +187,7 @@ _add developement roadmap here_
 
 # Contributors
 
-- Herman Larsson
+#### Herman Larsson
 
 #### Filip Andersson
 
