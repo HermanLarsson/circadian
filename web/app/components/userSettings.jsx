@@ -45,8 +45,31 @@ function UserSettings() {
         const result = tmpLabels.every(checkLabels);
 
         if (result) {
-            setLabels(tmpLabels);
-            setEditing(false);
+            let [fname, mname, lname] = tmpLabels[0].value.split(" ");
+            if (lname == undefined) {
+                lname = mname;
+                mname = null;
+            }
+            fetch("../api/user/update", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    finame: fname,
+                    miname: mname,
+                    laname: lname,
+                    dob: tmpLabels[1].value,
+                    bedtime: tmpLabels[2].value,
+                    trackingLength: tmpLabels[3].value,
+                })
+            })
+            .then((res) => res.json())
+            .then((data) => {
+                if (data.success) {
+                    setLabels(tmpLabels);
+                    setEditing(false);
+                }
+            })
+
         } 
     }
 
