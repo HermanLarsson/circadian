@@ -12,7 +12,6 @@ export function meta() {
 export default function Home() {
   return (
     <div>
-      <h1>Circadian</h1>
       <Alert />
       <ReportDropdown />
       <UserSettings />
