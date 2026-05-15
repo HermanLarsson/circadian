@@ -27,14 +27,16 @@ function ReportDropdown() {
       }, []);
 
     return (
+        <>
+            <h1>View Reports</h1>
             <Select
-                label="Dates:"
                 placeholder="Pick date"
                 searchable
                 maxDropdownHeight={100}
                 data={availableDates}      
                 onChange={(date) => navigate("../report/" + date)}          
             />
+        </>
     )
 }
 export default ReportDropdown;    
