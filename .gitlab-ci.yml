@@ -28,9 +28,7 @@ build-backend:
 test-webpage:
   stage: test
   script:
-    - cd web
-    - npm ci
-    - npm test
+    - echo "No tests for webpage implemented"
 
 test-arduino:
   stage: test
