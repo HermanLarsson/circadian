@@ -1,18 +1,20 @@
 import Alert from "../components/alert";
-import { Welcome } from "../welcome/welcome";
+import UserSettings from "../components/userSettings";
+import ReportDropdown from "../components/reportDropdown";
 
 export function meta() {
   return [
-    { title: "New React Router App" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Circadian" },
+    { name: "description", content: "Welcome to Circadian!" },
   ];
 }
 
 export default function Home() {
   return (
     <div>
-      <h1>Circadian</h1>
       <Alert />
+      <ReportDropdown />
+      <UserSettings />
     </div>
   );
 }
