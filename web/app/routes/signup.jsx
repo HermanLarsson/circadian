@@ -14,8 +14,8 @@ import { useNavigate } from "react-router";
 
 export function meta() {
   return [
-    { title: "Sign upto Circadian" },
-    { name: "description", content: "Welcome to React Router!" },
+    { title: "Sign up to Circadian" },
+    { name: "description", content: "Sign up to Circadian" },
   ];
 }
 
