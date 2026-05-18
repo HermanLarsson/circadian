@@ -1,5 +1,4 @@
 import { useParams } from "react-router";
-import { Welcome } from "../welcome/welcome";
 import { useEffect, useState } from "react";
 import {
   Button,
