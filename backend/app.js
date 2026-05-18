@@ -67,6 +67,47 @@ const valuesToAverage = {
   sound: [],
 };
 
+// object to store logged in users details
+let loggedInUser = {};
+
+// single alert object containing all alerts
+const allAlerts = {
+  temperature: {
+    sensor: "temperature",
+    status: "pending",
+    message: "Awaiting readings....",
+    recommendation: "Analysing room...",
+  },
+  light: {
+    sensor: "light",
+    status: "pending",
+    message: "Awaiting readings....",
+    recommendation: "Analysing room...",
+  },
+  sound: {
+    sensor: "sound",
+    status: "pending",
+    message: "Awaiting readings....",
+    recommendation: "Analysing room...",
+  },
+  humidity: {
+    sensor: "humidity",
+    status: "pending",
+    message: "Awaiting readings....",
+    recommendation: "Analysing room...",
+  },
+};
+
+function readUser() {
+  const data = fs.readFileSync(path.join(__dirname, "/usr.cache"));
+  user_id = data;
+}
+
+function writeUser(id) {
+  id = id.toString();
+  fs.writeFileSync(path.join(__dirname, "/usr.cache"), id);
+}
+
 // helper function to average a list of numbers
 function average(nums) {
   return nums.reduce((acc, val) => acc + val, 0) / nums.length;
@@ -103,34 +144,6 @@ client.on("message", (topic, message) => {
     console.log(`Error: Invalid sensor type`);
   }
 });
-
-// single alert object containing all alerts
-const allAlerts = {
-  temperature: {
-    sensor: "temperature",
-    status: "pending",
-    message: "Awaiting readings....",
-    recommendation: "Analysing room...",
-  },
-  light: {
-    sensor: "light",
-    status: "pending",
-    message: "Awaiting readings....",
-    recommendation: "Analysing room...",
-  },
-  sound: {
-    sensor: "sound",
-    status: "pending",
-    message: "Awaiting readings....",
-    recommendation: "Analysing room...",
-  },
-  humidity: {
-    sensor: "humidity",
-    status: "pending",
-    message: "Awaiting readings....",
-    recommendation: "Analysing room...",
-  },
-};
 
 // Store an average of values to DB every 60 seconds
 setInterval(async () => {
@@ -276,19 +289,6 @@ app.post("/api/login", async (req, res) => {
     res.sendStatus(403);
   }
 });
-
-function readUser() {
-  const data = fs.readFileSync(path.join(__dirname, "/usr.cache"));
-  user_id = data;
-}
-
-function writeUser(id) {
-  id = id.toString();
-  fs.writeFileSync(path.join(__dirname, "/usr.cache"), id);
-}
-
-// object to store logged in users details
-let loggedInUser = {};
 
 // endpoint to send loggedInUser details to various components
 app.get("/api/user", async (req, res) => {
