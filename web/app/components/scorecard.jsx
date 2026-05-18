@@ -22,19 +22,19 @@ function Scorecard(score, type) {
     }
   }
 
-  console.log(score);
   let unit;
+
   switch (score.type) {
-    case "Temp.":
+    case "temperature":
       unit = "C";
       break;
-    case "Light":
+    case "light":
       unit = "Lux";
       break;
-    case "Sound":
+    case "sound":
       unit = "dB";
       break;
-    case "Humidity":
+    case "humidity":
       unit = "%";
       break;
   }
