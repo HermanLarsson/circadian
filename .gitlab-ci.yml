@@ -14,21 +14,20 @@ build-arduino:
 build-webpage:
   stage: build
   script:
-    - cd web
+    - cd app/web
     - npm ci
     - npm run build
 
 build-backend:
   stage: build
   script:
-    - cd backend
+    - cd app/backend
     - npm ci
     - node --check app.js
-
 
 test-backend:
   stage: test
   script:
-    - cd backend
+    - cd app/backend
     - npm ci
     - npm test
