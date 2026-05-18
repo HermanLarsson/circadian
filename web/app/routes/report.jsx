@@ -1,20 +1,6 @@
 import { useParams } from "react-router";
-import { Welcome } from "../welcome/welcome";
 import { useEffect, useState } from "react";
-import {
-  Button,
-  Card,
-  CardSection,
-  NumberInput,
-  RingProgress,
-  Container,
-  Text,
-  Center,
-  Box,
-  Flex,
-  Space,
-} from "@mantine/core";
-import { LineChart } from "@mantine/charts";
+import { Container, Flex, Space } from "@mantine/core";
 import Scorecard from "../components/scorecard";
 import SensorTable from "../components/sensorTable";
 
