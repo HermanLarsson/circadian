@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 // user_id 0 for NO user
@@ -160,10 +160,10 @@ setInterval(async () => {
     try {
       await db.query(
         "INSERT INTO SENSOR_DATA (date_recorded, time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4, $5)",
-        [curr_date, curr_time, user_id, type, valuesAverage]
+        [curr_date, curr_time, user_id, type, valuesAverage],
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
       );
     } catch (error) {
       console.error("Data insertion error", error);
@@ -203,7 +203,7 @@ app.get("/api/report/:date", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM sensor_data WHERE CAST(date_recorded AS VARCHAR) LIKE $1 ORDER BY type, time_recorded",
-    [date]
+    [date],
   );
 
   //Calls the functions from report-generation to consolidate the data
@@ -219,12 +219,53 @@ app.get("/api/report/:date", async (req, res) => {
   res.send(reportData);
 });
 
+app.post("/api/signup", async (req, res) => {
+  //first checks if the username is taken
+  let result = await db.query("SELECT * FROM users WHERE username = $1", [
+    req.body.username,
+  ]);
+
+  //Check any erroneous inputs
+  let errors = [];
+  if (result.rows.length > 0) {
+    errors.push("Username already taken");
+  }
+  if (req.body.dob > "2011-01-01") {
+    errors.push("Must be 15 years or older");
+  }
+  if (req.body.password != req.body.passwordCheck) {
+    errors.push("Passwords don't match");
+  }
+  if (req.body.password.length < 8) {
+    errors.push("Password needs to be 8 characters");
+  }
+
+  //Sends errors OR adds user depending on if any error occursed
+  if (errors.length != 0) {
+    res.statusCode = 403;
+    res.send(errors);
+  } else {
+    let accQuery = await db.query(
+      "INSERT INTO users (username, password, fname, mname, lname, dob) VALUES ($1, $2, $3, $4, $5, $6);",
+      [
+        req.body.username,
+        req.body.password,
+        req.body.fname,
+        req.body.mname,
+        req.body.lname,
+        req.body.dob,
+      ],
+    );
+    res.sendStatus(200);
+  }
+});
+
 app.post("/api/login", async (req, res) => {
   //Use response code 200 for OK login, 403 for NOT OK
 
   let result = await db.query(
     "SELECT * FROM users WHERE username = $1 AND password = $2",
-    [req.body.username, req.body.password]
+    [req.body.username, req.body.password],
   );
   if (result.rows.length == 1) {
     writeUser(result.rows[0].id);

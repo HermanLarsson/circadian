@@ -28,15 +28,16 @@ build-backend:
 test-webpage:
   stage: test
   script:
-    - echo "This job will be testing stuff webpage"
+    - echo "No tests for webpage implemented"
 
 test-arduino:
   stage: test
   script:
-    - echo "This job will be testing stuff arduino"
-
+    - echo "No tests for arduino implemented."
 
 test-backend:
   stage: test
   script:
-    - echo "This job will be testing stuff backend"
+    - cd backend
+    - npm ci
+    - npm test

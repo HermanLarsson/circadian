@@ -22,9 +22,26 @@ function Scorecard(score, type) {
     }
   }
 
+  let unit;
+
+  switch (score.type) {
+    case "temperature":
+      unit = "C";
+      break;
+    case "light":
+      unit = "Lux";
+      break;
+    case "sound":
+      unit = "dB";
+      break;
+    case "humidity":
+      unit = "%";
+      break;
+  }
+
   return (
     <Card
-      w={{ base: 200, sm: 200, lg: 250 }}
+      w={{ base: 200, sm: 200, lg: 300 }}
       withBorder
       orientation="horizontal"
     >
@@ -42,7 +59,9 @@ function Scorecard(score, type) {
       <Card.Section inheritPadding px="xs">
         <Box>
           <h2>{score.type}</h2>
-          <Text fz="xl">200 dB</Text>
+          <Text fz="xl">
+            Average: {score.avgValue} {unit}
+          </Text>
         </Box>
       </Card.Section>
     </Card>

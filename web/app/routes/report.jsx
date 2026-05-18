@@ -7,7 +7,7 @@ import SensorTable from "../components/sensorTable";
 export function meta() {
   return [
     { title: "Report page" },
-    { name: "description", content: "Welcome to React Router!" },
+    { name: "description", content: "Circadian Sleep Reports" },
   ];
 }
 
@@ -30,16 +30,26 @@ export default function Report() {
         <h1>Report: {params["date"]}</h1>
         {reportData["scores"] && (
           <Flex justify="space-between" rowGap="md" wrap="wrap">
-            <Scorecard score={reportData["scores"]["sound"]} type="Sound" />
+            <Scorecard
+              score={reportData["scores"]["sound"]}
+              type="Sound"
+              avgValue={reportData["avgData"]["sound"]}
+            />
             <Scorecard
               score={reportData["scores"]["temperature"]}
               type="Temp."
+              avgValue={reportData["avgData"]["temperature"]}
             />
             <Scorecard
               score={reportData["scores"]["humidity"]}
               type="Humidity"
+              avgValue={reportData["avgData"]["humidity"]}
             />
-            <Scorecard score={reportData["scores"]["light"]} type="Light" />
+            <Scorecard
+              score={reportData["scores"]["light"]}
+              type="Light"
+              avgValue={reportData["avgData"]["light"]}
+            />
           </Flex>
         )}
         <Space h="xl"></Space>
