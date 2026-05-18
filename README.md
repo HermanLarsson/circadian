@@ -86,8 +86,15 @@ cd web
 npm install
 ```
 
-3. Install Arduino libraries:
-   _ALL ARDUINO LIBRARIES_
+3. Install Arduino libraries via Arduino CLI:
+```
+arduino-cli lib install "TFT_eSPI"
+arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
+arduino-cli lib install "DHT sensor library"
+arduino-cli lib install "PubSubClient"
+arduino-cli lib install "Seeed Arduino rpcWiFi"
+```
+Alternatively, install via Arduino IDE in 'Library Manager' search and install each library listed above.
 
 ## Setup
 
@@ -179,7 +186,7 @@ _add instructions for hardware here_
 
 1. Navigate to 'Settings' and chose your desired preferences.
 
-2. These preferences will decide and adjust the optimal levels for the users sleep enviroment and send messages/recommendations based on these preferecnes.
+2. These preferences will decide and adjust the optimal levels for the users sleep environment and send messages/recommendations based on these preferences.
 
 # Roadmap
 
@@ -188,19 +195,23 @@ _add developement roadmap here_
 # Contributors
 
 #### Herman Larsson
+- Hardware set up and configuration
+- Configured each sensor to be able to read
+- Conversion methods for each sensors base readings
+- Configured sensor to constantly read when active
+- User profile management
+- Project diagrams creation/upkeep
 
 #### Filip Andersson
 
 - MQTT Broker set up
 - Creation and maintenance of CI/CD Pipeline
 - GitLab runner installation
-- Configured pipeline to install necessary packages
 - Unit testing framework setup
 - Arduino build stage configured
 - Webpage/backend build stage configured
 - Test stages configured
-- Requirements refactoring
-- WIO Terminal measurement text added.
+- WIO Terminal Display
 - Software architecture diagram refactoring
 
 #### Kim Duso Joviken
@@ -211,11 +222,9 @@ _add developement roadmap here_
 - Creation of foundational dataflow pipeline
 - WIO Terminal WiFi configuration
 - Express.js server set up and configuration
-- Front end fetching and rendering of live-sensor values
-- Alert and reccommendation feature
+- Real time environment dashboard
+- Alert and recommendation feature
 - README / Documentation creation
-- Wiki Creation and Upkeep
-- Issue template creation
+- Issue and merge request template creation
 - Project Diagram creation (System Architecture Diagram, DB EER, DB Relational Model)
-- Requirements Engineering
 - Database Design and creation
