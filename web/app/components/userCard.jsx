@@ -1,6 +1,13 @@
 import { Avatar, Button, Paper, Text } from "@mantine/core";
+import { useNavigate } from "react-router";
 
 export function UserCard({ user }) {
+  let navigate = useNavigate();
+
+  function handleLogout() {
+    navigate("/login");
+  }
+  if (!user) return null;
   return (
     <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
       <Avatar src="" size={120} radius={120} mx="auto" alt="Username" />
@@ -11,7 +18,13 @@ export function UserCard({ user }) {
         {user.dob.slice(0, 10)}
       </Text>
 
-      <Button variant="outline" color="grape" fullWidth mt="md">
+      <Button
+        onClick={handleLogout}
+        variant="outline"
+        color="grape"
+        fullWidth
+        mt="md"
+      >
         Log out
       </Button>
     </Paper>
