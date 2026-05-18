@@ -23,17 +23,8 @@ build-backend:
   script:
     - cd backend
     - npm ci
+    - node --check app.js
 
-
-test-webpage:
-  stage: test
-  script:
-    - echo "No tests for webpage implemented"
-
-test-arduino:
-  stage: test
-  script:
-    - echo "No tests for arduino implemented."
 
 test-backend:
   stage: test
