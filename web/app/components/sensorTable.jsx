@@ -15,8 +15,6 @@ import { LineChart } from "@mantine/charts";
 import { useEffect, useState } from "react";
 
 function SensorTable({ timeline, type }) {
-  console.log(type);
-
   let unit;
   let maxValue;
 
