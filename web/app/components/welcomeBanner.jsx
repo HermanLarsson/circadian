@@ -3,23 +3,8 @@ import classes from "./welcomeBanner.module.css";
 import { UserCard } from "./userCard";
 import { useEffect, useState } from "react";
 
-export function WelcomeBanner() {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      const res = await fetch(`http://localhost:3000/api/user`);
-      const userData = await res.json();
-
-      console.log(userData);
-      setUser(userData);
-    };
-
-    fetchUser();
-  }, []);
-
-  if (!user) return <Loader color="grape" />;
-
+// Basic customized mantine component to be displayed at the top of the landing page
+export function WelcomeBanner({ user }) {
   return (
     <div className={classes.wrapper}>
       <div className={classes.body}>

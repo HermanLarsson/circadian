@@ -2,19 +2,13 @@ import { Avatar, Button, Paper, Text } from "@mantine/core";
 import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
+// Basic customized mantine component to render user
 export function UserCard({ user }) {
   let navigate = useNavigate();
 
   function handleLogout() {
     navigate("/login");
   }
-
-  useEffect(() => {
-    if (!user.username) {
-      navigate("/login");
-    }
-  }, []);
-
   return (
     <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
       <Avatar src="" size={120} radius={120} mx="auto" alt="Username" />

@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  }),
+  })
 );
 
 // user_id 0 for NO user
@@ -160,10 +160,10 @@ setInterval(async () => {
     try {
       await db.query(
         "INSERT INTO SENSOR_DATA (date_recorded, time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4, $5)",
-        [curr_date, curr_time, user_id, type, valuesAverage],
+        [curr_date, curr_time, user_id, type, valuesAverage]
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
       );
     } catch (error) {
       console.error("Data insertion error", error);
@@ -203,7 +203,7 @@ app.get("/api/report/:date", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM sensor_data WHERE CAST(date_recorded AS VARCHAR) LIKE $1 ORDER BY type, time_recorded",
-    [date],
+    [date]
   );
 
   //Calls the functions from report-generation to consolidate the data
@@ -254,7 +254,7 @@ app.post("/api/signup", async (req, res) => {
         req.body.mname,
         req.body.lname,
         req.body.dob,
-      ],
+      ]
     );
     res.sendStatus(200);
   }
@@ -265,7 +265,7 @@ app.post("/api/login", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM users WHERE username = $1 AND password = $2",
-    [req.body.username, req.body.password],
+    [req.body.username, req.body.password]
   );
   if (result.rows.length == 1) {
     writeUser(result.rows[0].id);
@@ -287,8 +287,10 @@ function writeUser(id) {
   fs.writeFileSync(path.join(__dirname, "/usr.cache"), id);
 }
 
+// object to store logged in users details
 let loggedInUser = {};
 
+// endpoint to send loggedInUser details to various components
 app.get("/api/user", async (req, res) => {
   res.json(loggedInUser);
 });
