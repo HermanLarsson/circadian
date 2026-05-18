@@ -7,6 +7,7 @@
       <a href="#about-circadian">About Circadian</a>
       <ul>
         <li><a href="#project-wiki">Project Wiki</a></li>
+        <li><a href="#demo-video">Demo Video</a></li>
       </ul>
     </li>
     <li><a href="#system-architecture">System Architecture</a></li>
@@ -18,8 +19,7 @@
         <li><a href="#setup">Setup</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#user-manual">User Manual</a></li>
     <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
@@ -32,11 +32,11 @@ The Circadian system tracks room conditions including light levels, temperature,
 
 ## Project Wiki
 
-https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home
+<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home">Click here</a> for Project Wiki
 
 ## Demo Video
 
-_link to video here..._
+<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home">Click here</a> for Project Demo Video
 
 ## System Architecture
 
@@ -63,8 +63,9 @@ Hardware:
 - 101020736 / Grove - Light Sensor
 - 101020011 / Grove - Temperature & Humidity Sensor (DHT11)
 - 101020063 / Grove - Loudness Sensor
-- Breadboard and connecting wires
 - Power supply
+- Universal 4 Pin Buckled Cable
+- 2x Seeed Grove Female Jumper to Grove Cable
 
 ## Installation
 
@@ -87,6 +88,7 @@ npm install
 ```
 
 3. Install Arduino libraries via Arduino CLI:
+
 ```
 arduino-cli lib install "TFT_eSPI"
 arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
@@ -94,6 +96,7 @@ arduino-cli lib install "DHT sensor library"
 arduino-cli lib install "PubSubClient"
 arduino-cli lib install "Seeed Arduino rpcWiFi"
 ```
+
 Alternatively, install via Arduino IDE in 'Library Manager' search and install each library listed above.
 
 ## Setup
@@ -164,7 +167,21 @@ npm run dev
 
 ### Hardware Setup
 
-_add instructions for hardware here_
+1. Connect the WIO Terminal to a power source.
+
+2. Connect the light sensor: GND (black) -> slot 39, SIG (yellow) -> slot 33, VCC (red) -> slot 17. Leave NC (white) unconnected.
+
+3. Connect the loudness sensor: GND (black) -> slot 6, SIG (yellow) -> slot 18, VCC (red) -> slot 4. Leave NC (white) unconnected.
+
+4. Connect the temperature and humidity sensor to the right-hand Grove port.
+
+Note: use the below image for reference...
+
+<img src="images/WioT-Pinout.jpg"/>
+
+For in-depth information on hardware, go to: Wiki > Home > Hardware Guide: 
+
+<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home/Set-up-hardware">Click here</a> for Hardware Guide
 
 # User Manual
 
@@ -188,10 +205,6 @@ _add instructions for hardware here_
 
 2. These preferences will decide and adjust the optimal levels for the users sleep environment and send messages/recommendations based on these preferences.
 
-# Roadmap
-
-_add developement roadmap here_
-
 # Contributors
 
 #### Herman Larsson
@@ -203,7 +216,6 @@ _add developement roadmap here_
 - Project diagrams creation/upkeep
 
 #### Filip Andersson
-
 - MQTT Broker set up
 - Creation and maintenance of CI/CD Pipeline
 - GitLab runner installation
@@ -217,7 +229,6 @@ _add developement roadmap here_
 #### Kim Duso Joviken
 
 #### Dominic Wooldridge
-
 - MQTT Broker set up and configuration
 - Creation of foundational dataflow pipeline
 - WIO Terminal WiFi configuration
