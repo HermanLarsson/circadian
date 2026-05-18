@@ -1,4 +1,5 @@
 import { Avatar, Button, Paper, Text } from "@mantine/core";
+import { useEffect } from "react";
 import { useNavigate } from "react-router";
 
 export function UserCard({ user }) {
@@ -7,7 +8,13 @@ export function UserCard({ user }) {
   function handleLogout() {
     navigate("/login");
   }
-  if (!user) return null;
+
+  useEffect(() => {
+    if (!user.username) {
+      navigate("/login");
+    }
+  }, []);
+
   return (
     <Paper radius="md" withBorder p="lg" bg="var(--mantine-color-body)">
       <Avatar src="" size={120} radius={120} mx="auto" alt="Username" />
@@ -15,7 +22,7 @@ export function UserCard({ user }) {
         {user.username}
       </Text>
       <Text ta="center" c="dimmed" fz="sm">
-        {user.dob.slice(0, 10)}
+        {user.dob?.slice(0, 10)}
       </Text>
 
       <Button
