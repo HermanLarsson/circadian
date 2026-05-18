@@ -22,6 +22,22 @@ function Scorecard(score, type) {
     }
   }
 
+  let unit;
+  switch (score.type) {
+    case "Temp.":
+      unit = "C";
+      break;
+    case "Light":
+      unit = "Lux";
+      break;
+    case "Sound":
+      unit = "dB";
+      break;
+    case "Humidity":
+      unit = "%";
+      break;
+  }
+
   return (
     <Card
       w={{ base: 200, sm: 200, lg: 250 }}
