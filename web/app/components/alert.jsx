@@ -24,7 +24,6 @@ function Alert() {
     const fetchAllAlerts = async () => {
       const res = await fetch("http://localhost:3000/api/alerts");
       const data = await res.json();
-      console.log("DATA: ", data);
 
       // sets the new data (fresh readings and alerts) and triggers re-render
       setAllAlerts(data);

@@ -15,7 +15,12 @@ import {
   soundAlert,
   tempAlert,
 } from "./utils/alerts.js";
-import {isValidHumidity, isValidTemperature, isValidLux, isValidSound} from "./utils/sensorValidation.js";
+import {
+  isValidHumidity,
+  isValidTemperature,
+  isValidLux,
+  isValidSound,
+} from "./utils/sensorValidation.js";
 
 dotenv.config();
 
@@ -73,21 +78,21 @@ client.on("message", (topic, message) => {
     const messageInt = parseFloat(message.toString());
 
     let testResult;
-    switch(type){
-        case "temperature":
-            testResult = isValidTemperature(messageInt);
-            break
-        case "humidity":
-            testResult = isValidHumidity(messageInt);
-            break
-        case "light":
-            testResult = isValidLux(messageInt);
-            break
-        case "sound":
-            testResult = isValidSound(messageInt);
-            break
-        default:
-            testResult = false
+    switch (type) {
+      case "temperature":
+        testResult = isValidTemperature(messageInt);
+        break;
+      case "humidity":
+        testResult = isValidHumidity(messageInt);
+        break;
+      case "light":
+        testResult = isValidLux(messageInt);
+        break;
+      case "sound":
+        testResult = isValidSound(messageInt);
+        break;
+      default:
+        testResult = false;
     }
     if (testResult) {
       valuesToAverage[type].push(messageInt);
@@ -187,7 +192,6 @@ setInterval(() => {
       allAlerts.sound = soundAlert(lastestReading);
     }
   }
-  console.log("ALL ALERTS:", allAlerts);
 }, 5000);
 
 app.get("/", (req, res) => {
@@ -225,6 +229,7 @@ app.post("/api/login", async (req, res) => {
   if (result.rows.length == 1) {
     writeUser(result.rows[0].id);
     readUser();
+    loggedInUser = result.rows[0];
     res.sendStatus(200);
   } else {
     res.sendStatus(403);
@@ -241,16 +246,21 @@ function writeUser(id) {
   fs.writeFileSync(path.join(__dirname, "/usr.cache"), id);
 }
 
+let loggedInUser = {};
+
+app.get("/api/user", async (req, res) => {
+  res.json(loggedInUser);
+});
+
 app.get("/api/alerts", (req, res) => {
   res.json(allAlerts);
 });
 
 //Query for getting all dates for logged in user
 app.get("/api/report/all/dates", async (req, res) => {
-  
   let result = await db.query(
-    "SELECT DISTINCT CAST(date_recorded AS VARCHAR) FROM sensor_data WHERE user_id=$1",  
-    [parseInt(user_id.toString())],
+    "SELECT DISTINCT CAST(date_recorded AS VARCHAR) FROM sensor_data WHERE user_id=$1",
+    [parseInt(user_id.toString())]
   );
 
   res.send(result.rows);
@@ -258,44 +268,43 @@ app.get("/api/report/all/dates", async (req, res) => {
 
 //Query for getting user details/settings for logged in user
 app.get("/api/user/details", async (req, res) => {
-
   let result = await db.query(
-    "SELECT fname, mname, lname, CAST(dob AS VARCHAR), bedtime, tracking_length FROM users, settings WHERE id=$1 AND user_id=$1",  
-    [parseInt(user_id.toString())],
+    "SELECT fname, mname, lname, CAST(dob AS VARCHAR), bedtime, tracking_length FROM users, settings WHERE id=$1 AND user_id=$1",
+    [parseInt(user_id.toString())]
   );
 
   res.send(result.rows);
 });
-  
+
 //Query for updating logged in users details/settings
 app.post("/api/user/update", async (req, res) => {
-  const { fname, mname, lname, dob, bedtime, trackingLength} = req.body;
-  
+  const { fname, mname, lname, dob, bedtime, trackingLength } = req.body;
+
   //Query for user details
-  await db.query (
+  await db.query(
     "UPDATE users SET fname=$1, mname=$2, lname=$3, dob=$4 WHERE id=$5",
-    [ fname, mname, lname, dob, parseInt(user_id.toString())],
-    
+    [fname, mname, lname, dob, parseInt(user_id.toString())],
+
     (err, result) => {
       if (err) {
-        console.log(`Error: ${err} \nQuery Result: ${result}`)
+        console.log(`Error: ${err} \nQuery Result: ${result}`);
         return;
       }
       //Second query for user settings
       db.query(
         "UPDATE settings SET bedtime=$1, tracking_length=$2 WHERE user_id=$3",
-        [ bedtime, trackingLength, parseInt(user_id.toString())],
-        
+        [bedtime, trackingLength, parseInt(user_id.toString())],
+
         (err, result) => {
           if (err) {
-            console.log(`Error: ${err} \nQuery Result: ${result}`)
+            console.log(`Error: ${err} \nQuery Result: ${result}`);
             return;
           }
-          res.json({ success: true})
+          res.json({ success: true });
         }
-      )
-      }
-    )
+      );
+    }
+  );
 });
 
 app.listen(port, () => {
