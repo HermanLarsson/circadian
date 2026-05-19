@@ -14,30 +14,20 @@ build-arduino:
 build-webpage:
   stage: build
   script:
-    - cd web
+    - cd app/web
     - npm ci
     - npm run build
 
 build-backend:
   stage: build
   script:
-    - cd backend
+    - cd app/backend
     - npm ci
-
-
-test-webpage:
-  stage: test
-  script:
-    - echo "No tests for webpage implemented"
-
-test-arduino:
-  stage: test
-  script:
-    - echo "No tests for arduino implemented."
+    - node --check app.js
 
 test-backend:
   stage: test
   script:
-    - cd backend
+    - cd app/backend
     - npm ci
     - npm test
