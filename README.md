@@ -36,7 +36,7 @@ The Circadian system tracks room conditions including light levels, temperature,
 
 ## Demo Video
 
-<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home">Click here</a> for Project Demo Video
+<a href="https://youtu.be/dwEEQKrlEoE?si=FRdCqgP_hTlE52IW">Click here</a> for Project Demo Video
 
 ## System Architecture
 
@@ -52,7 +52,7 @@ For setting up and operating the system locally you will need to address the fol
 
 Software:
 
-- Arduino IDE (optional). Info at: https://docs.arduino.cc/software/ide/
+- Arduino IDE. Info at: https://docs.arduino.cc/software/ide/
 - Node.js (v18+). Info at: https://nodejs.org/
 - PostgreSQL (v18+). Info at: https://www.postgresql.org/
 - HiveMQ Cloud. Info at: https://www.hivemq.com/
@@ -78,23 +78,23 @@ git clone https://git.chalmers.se/courses/dit113/2026/group6/circadian.git
 2. Install dependencies:
 
 ```
-cd backend
+cd app/backend
 npm install
 ```
 
 ```
-cd web
+cd app/web
 npm install
 ```
 
 3. Install Arduino libraries via Arduino CLI:
 
 ```
-arduino-cli lib install "TFT_eSPI"
 arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
 arduino-cli lib install "DHT sensor library"
 arduino-cli lib install "PubSubClient"
 arduino-cli lib install "Seeed Arduino rpcWiFi"
+arduino-cli lib uninstall "TFT_eSPI"
 ```
 
 Alternatively, install via Arduino IDE in 'Library Manager' search and install each library listed above.
@@ -103,7 +103,7 @@ Alternatively, install via Arduino IDE in 'Library Manager' search and install e
 
 ### Software Setup
 
-1. Create an .env file in the /backend folder.
+1. Create an .env file in the app/backend folder.
    Configure environment variables with your credentials as necessary:
 
 ```
@@ -129,7 +129,7 @@ psql -U postgres -c "CREATE DATABASE circadian;"
 psql -U postgres -d circadian -f backend/db/schema.sql
 ```
 
-3. Create an arduino_secrets.h in the arduino folder paste in following. Update the values with your credentials:
+3. Create an arduino_secrets.h in the arduino folder and paste in following. Update the values with your credentials:
 
 ```
 #define WIFI_NAME "ADD_NETWORK_NAME"
@@ -156,12 +156,12 @@ Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading
 5. Run the backend and front end:
 
 ```
-cd backend
+cd app/backend
 node app.js // or npm run dev using nodemon
 ```
 
 ```
-cd web
+cd app/web
 npm run dev
 ```
 
@@ -227,6 +227,14 @@ For in-depth information on hardware, go to: Wiki > Home > Hardware Guide:
 - Software architecture diagram refactoring
 
 #### Kim Duso Joviken
+- Front-End Initialization
+- React App setup
+- Login Page creation
+- Signup Page creation
+- Hardware Sensor Calibration
+- Report Generation Feature and front end rendering
+- Environment Scoring Algorithm
+- Project File structure
 
 #### Dominic Wooldridge
 - MQTT Broker set up and configuration
