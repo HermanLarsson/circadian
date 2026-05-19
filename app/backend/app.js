@@ -36,7 +36,7 @@ app.use(
   cors({
     origin: "http://localhost:5173",
     credentials: true,
-  })
+  }),
 );
 
 // user_id 0 for NO user
@@ -100,7 +100,7 @@ const allAlerts = {
 
 function readUser() {
   const data = fs.readFileSync(path.join(__dirname, "/usr.cache"));
-  user_id = data;
+  user_id = parseInt(data.toString());
 }
 
 function writeUser(id) {
@@ -173,13 +173,14 @@ setInterval(async () => {
     try {
       await db.query(
         "INSERT INTO SENSOR_DATA (date_recorded, time_recorded, user_id, type, value) VALUES ($1, $2, $3, $4, $5)",
-        [curr_date, curr_time, user_id, type, valuesAverage]
+        [curr_date, curr_time, user_id, type, valuesAverage],
       );
       console.log(
-        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`
+        `Saved ${valuesAverage}, ${time_recorded}, ${user_id}, ${type} to SENSOR_DATA`,
       );
     } catch (error) {
       console.error("Data insertion error", error);
+      console.log(user_id);
     }
 
     // reset values in list
@@ -216,7 +217,7 @@ app.get("/api/report/:date", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM sensor_data WHERE CAST(date_recorded AS VARCHAR) LIKE $1 ORDER BY type, time_recorded",
-    [date]
+    [date],
   );
 
   //Calls the functions from report-generation to consolidate the data
@@ -267,7 +268,7 @@ app.post("/api/signup", async (req, res) => {
         req.body.mname,
         req.body.lname,
         req.body.dob,
-      ]
+      ],
     );
     res.sendStatus(200);
   }
@@ -278,7 +279,7 @@ app.post("/api/login", async (req, res) => {
 
   let result = await db.query(
     "SELECT * FROM users WHERE username = $1 AND password = $2",
-    [req.body.username, req.body.password]
+    [req.body.username, req.body.password],
   );
   if (result.rows.length == 1) {
     writeUser(result.rows[0].id);
@@ -303,7 +304,7 @@ app.get("/api/alerts", (req, res) => {
 app.get("/api/report/all/dates", async (req, res) => {
   let result = await db.query(
     "SELECT DISTINCT CAST(date_recorded AS VARCHAR) FROM sensor_data WHERE user_id=$1",
-    [parseInt(user_id.toString())]
+    [parseInt(user_id.toString())],
   );
 
   res.send(result.rows);
@@ -313,7 +314,7 @@ app.get("/api/report/all/dates", async (req, res) => {
 app.get("/api/user/details", async (req, res) => {
   let result = await db.query(
     "SELECT fname, mname, lname, CAST(dob AS VARCHAR), bedtime, tracking_length FROM users, settings WHERE id=$1 AND user_id=$1",
-    [parseInt(user_id.toString())]
+    [parseInt(user_id.toString())],
   );
 
   res.send(result.rows);
@@ -326,7 +327,7 @@ app.post("/api/user/update", async (req, res) => {
   //Query for user details
   await db.query(
     "UPDATE users SET fname=$1, mname=$2, lname=$3, dob=$4 WHERE id=$5",
-    [fname, mname, lname, dob, parseInt(user_id.toString())],
+    [fname, mname, lname, dob, user_id],
 
     (err, result) => {
       if (err) {
@@ -344,9 +345,9 @@ app.post("/api/user/update", async (req, res) => {
             return;
           }
           res.json({ success: true });
-        }
+        },
       );
-    }
+    },
   );
 });
 
