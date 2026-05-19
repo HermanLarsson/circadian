@@ -66,6 +66,10 @@ export default function Login() {
               <Space h="md" />
               <Center>
                 <Button type="submit">Log In</Button>
+                <Button
+                  ml={1}  
+                  onClick={() => navigate("../signup")}
+                >Sign Up</Button>
               </Center>
               {wrongInfoError && (
                 <Text ta="center" color="red">
