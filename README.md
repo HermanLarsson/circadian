@@ -103,7 +103,14 @@ Alternatively, install via Arduino IDE in 'Library Manager' search and install e
 
 ### Software Setup
 
-1. Create an .env file in the app/backend folder.
+1. Set up PostgreSQL Database
+
+```
+psql -U postgres -c "CREATE DATABASE circadian;"
+psql -U postgres -d circadian -f backend/db/schema.sql
+```
+
+2. Create an .env file in the app/backend folder.
    Configure environment variables with your credentials as necessary:
 
 ```
@@ -120,13 +127,6 @@ PGPASSWORD=YOUR_POSTGRES_USERNAME
 PGHOST=localhost
 PGPORT=5432
 PGDATABASE=circadian
-```
-
-2. Set up PostgreSQL Database
-
-```
-psql -U postgres -c "CREATE DATABASE circadian;"
-psql -U postgres -d circadian -f backend/db/schema.sql
 ```
 
 3. Create an arduino_secrets.h in the arduino folder and paste in following. Update the values with your credentials:
