@@ -177,7 +177,7 @@ npm run dev
 
 Note: use the below image for reference...
 
-<img src="images/WioT-Pinout.jpg"/>
+<img src="images/WioT-Pinout.jpg" width="350"/>
 
 For in-depth information on hardware, go to: Wiki > Home > Hardware Guide: 
 
