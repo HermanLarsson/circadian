@@ -7,5 +7,5 @@ arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
 arduino-cli lib install "DHT sensor library"
 arduino-cli lib install "PubSubClient"
 arduino-cli lib install "Seeed Arduino rpcWiFi"
-
+arduino-cli lib uninstall "TFT_eSPI"
 
