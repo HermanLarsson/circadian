@@ -26,7 +26,6 @@ export default function Home() {
           navigate("/login");
         }
       });
-    setLoading(false);
   }, []);
 
   return (
