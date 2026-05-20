@@ -7,6 +7,7 @@
       <a href="#about-circadian">About Circadian</a>
       <ul>
         <li><a href="#project-wiki">Project Wiki</a></li>
+        <li><a href="#demo-video">Demo Video</a></li>
       </ul>
     </li>
     <li><a href="#system-architecture">System Architecture</a></li>
@@ -18,8 +19,7 @@
         <li><a href="#setup">Setup</a></li>
       </ul>
     </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#user-manual">User Manual</a></li>
     <li><a href="#contributors">Contributors</a></li>
   </ol>
 </details>
@@ -32,26 +32,216 @@ The Circadian system tracks room conditions including light levels, temperature,
 
 ## Project Wiki
 
-https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home
+<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home">Click here</a> for Project Wiki
+
+## Demo Video
+
+<a href="https://youtu.be/dwEEQKrlEoE?si=FRdCqgP_hTlE52IW">Click here</a> for Project Demo Video
 
 ## System Architecture
 
-https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home/System-Architecture?edit=true
+Below is a representation of our two-tier system and how data will flow through the Circadian system. The Application tier and the Hardware tier are separated by an MQTT Broker. Within the Application tier data flows to the Web App (frontend/UI) and the Database via the Express.js server.
+
+<img src="images/SystemArchitecture.png"/>
 
 # Getting Started
 
+For setting up and operating the system locally you will need to address the following:
+
 ## Prerequisites
+
+Software:
+
+- Arduino IDE. Info at: https://docs.arduino.cc/software/ide/
+- Node.js (v18+). Info at: https://nodejs.org/
+- PostgreSQL (v18+). Info at: https://www.postgresql.org/
+- HiveMQ Cloud. Info at: https://www.hivemq.com/
+
+Hardware:
+
+- Microcontroller (e.g. WIO Terminal)
+- 101020736 / Grove - Light Sensor
+- 101020011 / Grove - Temperature & Humidity Sensor (DHT11)
+- 101020063 / Grove - Loudness Sensor
+- Power supply
+- Universal 4 Pin Buckled Cable
+- 2x Seeed Grove Female Jumper to Grove Cable
 
 ## Installation
 
+1. Clone the repository:
+
+```
+git clone https://git.chalmers.se/courses/dit113/2026/group6/circadian.git
+```
+
+2. Install dependencies:
+
+```
+cd app/backend
+npm install
+```
+
+```
+cd app/web
+npm install
+```
+
+3. Install Arduino libraries via Arduino CLI:
+
+```
+arduino-cli lib install "Adafruit NeoMatrix ZeroDMA library"
+arduino-cli lib install "DHT sensor library"
+arduino-cli lib install "PubSubClient"
+arduino-cli lib install "Seeed Arduino rpcWiFi"
+arduino-cli lib uninstall "TFT_eSPI"
+```
+
+Alternatively, install via Arduino IDE in 'Library Manager' search and install each library listed above.
+
 ## Setup
 
-# Usage
+### Software Setup
 
-# Roadmap
+1. Set up PostgreSQL Database
+
+```
+psql -U postgres -c "CREATE DATABASE circadian;"
+psql -U postgres -d circadian -f backend/db/schema.sql
+```
+
+2. Create an .env file in the app/backend folder.
+   Configure environment variables with your credentials as necessary:
+
+```
+PORT=3000
+
+BROKER_URL='YOUR_HIVEMQ_URL'
+BROKER_PORT=8883
+MQTT_USERNAME='YOUR_HIVEMQ_USERNAME'
+MQTT_PASSWORD='YOUR_HIVEMQ_PASSWORD'
+
+DATABASE_URL=postgresql://localhost:5432/circadian
+PGUSER=YOUR_POSTGRES_USERNAME
+PGPASSWORD=YOUR_POSTGRES_USERNAME
+PGHOST=localhost
+PGPORT=5432
+PGDATABASE=circadian
+```
+
+3. Create an arduino_secrets.h in the arduino folder and paste in following. Update the values with your credentials:
+
+```
+#define WIFI_NAME "ADD_NETWORK_NAME"
+#define WIFI_PASSWORD "ADD_WIFI_PASSWORD"
+#define MQTT_URL "ADD_MQTT_URL"
+#define MQTT_PORT 8883
+#define MQTT_CLIENT_ID "WioTerminalClient"
+#define MQTT_USERNAME "ADD_MQTT_USERNAME"
+#define MQTT_PASSWORD "ADD_MQTT_PASSWORD!"
+```
+
+4. Open arduino/certs.h and paste in your HiveMQ Cloud TLS certificate using the following structure:
+
+```
+const char* hivemq_cert = R"EOF(
+-----BEGIN CERTIFICATE-----
+YOUR_TLS_CERTIFICATE_HERE
+-----END CERTIFICATE-----
+)EOF";
+```
+
+Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading-tls-java-keystores-and-truststores
+
+5. Run the backend and front end:
+```
+cd app/backend
+node app.js
+```
+```
+cd app/web
+npm run build
+```
+
+### Hardware Setup
+
+1. Connect the WIO Terminal to a power source.
+
+2. Connect the light sensor: GND (black) -> slot 39, SIG (yellow) -> slot 33, VCC (red) -> slot 17. Leave NC (white) unconnected.
+
+3. Connect the loudness sensor: GND (black) -> slot 6, SIG (yellow) -> slot 18, VCC (red) -> slot 4. Leave NC (white) unconnected.
+
+4. Connect the temperature and humidity sensor to the right-hand Grove port.
+
+Note: use the below image for reference...
+
+<img src="images/WioT-Pinout.jpg" width="350"/>
+
+For in-depth information on hardware, go to: Wiki > Home > Hardware Guide: 
+
+<a href="https://git.chalmers.se/courses/dit113/2026/group6/circadian/-/wikis/home/Set-up-hardware">Click here</a> for Hardware Guide
+
+# User Manual
+
+### Basic user creation and login
+
+1. If first time using Circadian, navigate to the sign up page by clicking the 'sign up' button and fill in your details.
+
+2. Login using your username and password.
+
+3. You will be redirected to your landing page where you will be show live sensor readings and recommendations for your environment.
+
+### Report Generation
+
+1. Select a date from the report drop down menu on the landing page.
+
+2. A report will be generated using your data from that day. Here you can see trends of your sleep environment from chosen days. Furthermore, a score is calculated for each sensor based on how far from the optimal value your sleep environment was on that day.
+
+### Account Customization
+
+1. Navigate to 'Settings' and chose your desired preferences.
+
+2. These preferences will decide and adjust the optimal levels for the users sleep environment and send messages/recommendations based on these preferences.
 
 # Contributors
-* Herman Larsson
-* Filip Andersson
-* Kim Duso Joviken
-* Dominic Wooldridge
+
+#### Herman Larsson
+- Hardware set up and configuration
+- Configured each sensor to be able to read
+- Conversion methods for each sensors base readings
+- Configured sensor to constantly read when active
+- User profile management
+- Project diagrams creation/upkeep
+
+#### Filip Andersson
+- MQTT Broker set up
+- Creation and maintenance of CI/CD Pipeline
+- GitLab runner installation
+- Unit testing framework setup
+- Arduino build stage configured
+- Webpage/backend build stage configured
+- Test stages configured
+- WIO Terminal Display
+- Software architecture diagram refactoring
+
+#### Kim Duso Joviken
+- Front-End Initialization
+- React App setup
+- Login Page creation
+- Signup Page creation
+- Hardware Sensor Calibration
+- Report Generation Feature and front end rendering
+- Environment Scoring Algorithm
+- Project File structure
+
+#### Dominic Wooldridge
+- MQTT Broker set up and configuration
+- Creation of foundational dataflow pipeline
+- WIO Terminal WiFi configuration
+- Express.js server set up and configuration
+- Real time environment dashboard
+- Alert and recommendation feature
+- README / Documentation creation
+- Issue and merge request template creation
+- Project Diagram creation (System Architecture Diagram, DB EER, DB Relational Model)
+- Database Design and creation
