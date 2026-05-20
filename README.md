@@ -154,15 +154,13 @@ YOUR_TLS_CERTIFICATE_HERE
 Info at: https://www.hivemq.com/blog/end-to-end-encryption-in-the-cloud/#heading-tls-java-keystores-and-truststores
 
 5. Run the backend and front end:
-
 ```
 cd app/backend
-node app.js // or npm run dev using nodemon
+node app.js
 ```
-
 ```
 cd app/web
-npm run dev
+npm run build
 ```
 
 ### Hardware Setup
@@ -197,7 +195,7 @@ For in-depth information on hardware, go to: Wiki > Home > Hardware Guide:
 
 1. Select a date from the report drop down menu on the landing page.
 
-2. A report will be generated using your data from that day. Here you can see trends of your sleep environment from chosen days.
+2. A report will be generated using your data from that day. Here you can see trends of your sleep environment from chosen days. Furthermore, a score is calculated for each sensor based on how far from the optimal value your sleep environment was on that day.
 
 ### Account Customization
 
